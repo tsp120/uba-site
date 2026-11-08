@@ -1,40 +1,52 @@
 ---
 import Base from '../layouts/Base.astro';
 import TeamLink from '../components/TeamLink.astro';
-import { newspaper, newspaperDates, storyHeadline, posts, standings, teamList, team } from '../lib/strat.mjs';
-import { fmtDate, paperUrl, pct, gbStr } from '../lib/fmt.mjs';
+import Score from '../components/Score.astro';
+import { newspaper, newspaperDates, storyHeadline, posts, standings, teamList, team, schedule, lastPlayedDate } from '../lib/strat.mjs';
+import { fmtDate, paperUrl, gbStr } from '../lib/fmt.mjs';
 const dates = newspaperDates().slice(-3).reverse();
 const stories = dates.flatMap((d) => newspaper(d).stories.map((s) => ({ ...s, href: `${paperUrl(d)}#${s.id}`, title: storyHeadline(s) })));
 const featured = stories[0];
-const rest = stories.slice(1, 13);
+const rest = stories.slice(1, 11);
 const recent = posts().slice(0, 2);
 const C = standings();
-// Linescore lines from the story ("Jacks.......... 4 3 0  0 0 3 ... - 11 14 0") give R/H/E for the hero.
-const rhe = featured ? featured.linescore.split('\n').map((l) => l.match(/-\s+(\d+)\s+(\d+)\s+(\d+)\s*$/)).filter(Boolean).slice(0, 2) : [];
+const last = lastPlayedDate();
+const finals = schedule().games.filter((g) => g.date === last && g.played);
+// Inning-by-inning line from the Strat story ("Jacks........... 4 3 0  0 0 3  0 1 0  - 11 14  0").
+const lines = featured ? featured.linescore.split('\n').map((l) => l.match(/^\S.*?\.+\s+((?:[\dXx]+\s+)+)-\s+(\d+)\s+(\d+)\s+(\d+)\s*$/)).filter(Boolean).slice(0, 2).map((m) => ({ inn: m[1].trim().split(/\s+/), r: +m[2], h: m[3], e: m[4] })) : [];
+const innings = Math.max(0, ...lines.map((l) => l.inn.length));
+const decision = featured?.decision.replace(/Win:/, 'W: ').replace(/Loss:/, ', L: ').replace(/Save:/, ', S: ').replace(/\s+,/g, ',');
 ---
 <Base title="" active="home">
   {featured && (
   <section class="hero">
-    <article class="story">
+    <div>
       <p class="when">Game of the day, {fmtDate(featured.date, { weekday: 'long', month: 'long', day: 'numeric' })}</p>
       <h1>{featured.title}</h1>
-      {rhe.length === 2 && <div class="linescore" aria-label="Line score">
-        <span class="t"></span><span class="h">R</span><span class="h">H</span><span class="h">E</span>
-        {[[featured.away, rhe[0]], [featured.home, rhe[1]]].map(([ab, m]) => <><span class="t">{team(ab) ? `${team(ab).city} ${team(ab).nickname}` : ab}</span><span>{m[1]}</span><span>{m[2]}</span><span>{m[3]}</span></>)}
-      </div>}
       {featured.paragraphs.slice(0, 2).map((p) => <p>{p}</p>)}
       <a class="btn fill" href={featured.href}>Read the full story</a>
-    </article>
-    <aside class="side-standings">
-      <h2>Standings</h2>
-      {C.map((c) => <>
-        <div class="conf">{c.name}</div>
-        <table><thead><tr><th>Team</th><th class="num">W</th><th class="num">L</th><th class="num">GB</th></tr></thead>
-          <tbody>{c.divisions.map((d) => <><tr class="dv"><td colspan="4">{d.label}</td></tr>{d.rows.slice(0, 2).map((r, i) => <tr class={i === 0 ? 'lead-row' : ''}><td><TeamLink ab={r.abbr} /></td><td class="num">{r.w}</td><td class="num">{r.l}</td><td class="num">{gbStr(r.gb)}</td></tr>)}</>)}</tbody></table>
-      </>)}
-      <p class="small" style="margin-top:.8rem"><a href="/standings/">Full standings and wild card</a></p>
-    </aside>
+    </div>
+    {lines.length === 2 && (
+    <div class="linecard" aria-label="Line score">
+      <div class="bar"></div>
+      <div class="body">
+        <table>
+          <thead><tr><th></th>{Array.from({ length: innings }, (_, i) => <th>{i + 1}</th>)}<th>R</th><th>H</th><th>E</th></tr></thead>
+          <tbody>{[[featured.away, lines[0]], [featured.home, lines[1]]].map(([ab, l]) => (
+            <tr class={l.r === Math.max(lines[0].r, lines[1].r) ? 'won' : ''}>
+              <td class="tm">{team(ab)?.logo && <img class="logo-sm" src={team(ab).logo} alt="" />}{team(ab)?.city || ab}</td>
+              {Array.from({ length: innings }, (_, i) => <td>{l.inn[i] ?? ''}</td>)}<td class="tot">{l.r}</td><td class="tot">{l.h}</td><td class="tot">{l.e}</td>
+            </tr>))}</tbody>
+        </table>
+        {decision && <p class="dec">{decision}</p>}
+      </div>
+    </div>)}
   </section>)}
+
+  <section>
+    <h2 class="major">Final scores<small>{fmtDate(last, { weekday: 'long', month: 'long', day: 'numeric' })}</small></h2>
+    <div class="scores">{finals.map((g) => <Score g={g} />)}</div>
+  </section>
 
   {recent.length > 0 && (
   <section>
@@ -42,12 +54,22 @@ const rhe = featured ? featured.linescore.split('\n').map((l) => l.match(/-\s+(\
     {recent.map((p) => <div class="notice" style="margin-bottom:1rem"><h3 style="margin-bottom:.3rem"><a class="plain" href={`/news/${p.slug}/`}>{p.title}</a></h3><p class="small muted" style="margin:0 0 .4rem">{p.date && fmtDate(p.date)}</p><p style="margin:0">{p.excerpt}… <a href={`/news/${p.slug}/`}>Keep reading</a></p></div>)}
   </section>)}
 
-  <section>
-    <h2 class="major">Around the league<small>Game stories from the last three days</small></h2>
-    <div class="posts">{rest.map((s) => (
-      <article class="post"><div class="meta">{fmtDate(s.date, { month: 'short', day: 'numeric' })}</div><h3><a href={s.href}>{s.title}</a></h3><p>{s.lead}</p></article>))}</div>
-    <p style="margin-top:1.2rem"><a class="btn" href={paperUrl(dates[0])}>Open today's newspaper</a></p>
-  </section>
+  <div class="home-cols">
+    <section>
+      <h2 class="major">Around the league</h2>
+      <div class="posts">{rest.map((s) => <article class="post"><div class="meta">{fmtDate(s.date, { month: 'short', day: 'numeric' })}</div><h3><a href={s.href}>{s.title}</a></h3><p>{s.lead}</p></article>)}</div>
+      <p style="margin-top:1.2rem"><a class="btn" href={paperUrl(dates[0])}>Open today's newspaper</a></p>
+    </section>
+    <aside class="side-standings">
+      <h2 class="major">Standings</h2>
+      {C.map((c) => <>
+        <div class="conf">{c.name}</div>
+        <div class="tscroll"><table><thead><tr><th>Team</th><th class="num">W</th><th class="num">L</th><th class="num">GB</th></tr></thead>
+          <tbody>{c.divisions.map((d) => <><tr class="dv"><td colspan="4">{d.label}</td></tr>{d.rows.slice(0, 2).map((r, i) => <tr class={i === 0 ? 'lead-row' : ''}><td><TeamLink ab={r.abbr} /></td><td class="num">{r.w}</td><td class="num">{r.l}</td><td class="num">{gbStr(r.gb)}</td></tr>)}</>)}</tbody></table></div>
+      </>)}
+      <p class="small"><a href="/standings/">Full standings and wild card</a></p>
+    </aside>
+  </div>
 
   <section>
     <h2 class="major">The 30 clubs</h2>

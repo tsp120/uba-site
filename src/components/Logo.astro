@@ -1,0 +1,18 @@
+---
+// UBA badge: navy disc, 70s jersey stripes, slab lettering. Inline so it uses the site's own fonts.
+const { size = 56, title = 'Unbelievable Baseball Association' } = Astro.props;
+const id = 'lg' + Math.random().toString(36).slice(2, 7);
+---
+<svg class="logo" width={size} height={size} viewBox="0 0 200 200" role="img" aria-label={title}>
+  <defs><clipPath id={id}><circle cx="100" cy="100" r="88" /></clipPath></defs>
+  <circle cx="100" cy="100" r="98" fill="#FFFFFF" />
+  <circle cx="100" cy="100" r="92" fill="#1C2340" />
+  <g clip-path={`url(#${id})`}>
+    <rect x="0" y="118" width="200" height="11" fill="#F7A823" />
+    <rect x="0" y="131" width="200" height="11" fill="#F0682A" />
+    <rect x="0" y="144" width="200" height="11" fill="#D9372B" />
+  </g>
+  <text x="100" y="104" text-anchor="middle" font-family="'Alfa Slab One',Rockwell,serif" font-size="62" fill="#FFFFFF" letter-spacing="1">UBA</text>
+  <text x="100" y="178" text-anchor="middle" font-family="Rubik,Arial,sans-serif" font-weight="700" font-size="15" fill="#FFFFFF" letter-spacing="4">1968</text>
+  <path d="M42 62 Q100 22 158 62" fill="none" stroke="#F7A823" stroke-width="3" stroke-dasharray="2 6" stroke-linecap="round" />
+</svg>

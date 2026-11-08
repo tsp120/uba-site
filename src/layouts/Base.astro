@@ -1,20 +1,15 @@
 ---
-import '@fontsource/barlow-condensed/500.css';
-import '@fontsource/barlow-condensed/600.css';
-import '@fontsource/barlow-condensed/700.css';
-import '@fontsource/barlow/400.css';
-import '@fontsource/barlow/600.css';
-import '@fontsource/barlow/700.css';
-import '@fontsource/source-serif-4/400.css';
-import '@fontsource/source-serif-4/600.css';
+import '@fontsource/alfa-slab-one/400.css';
+import '@fontsource/rubik/400.css';
+import '@fontsource/rubik/500.css';
+import '@fontsource/rubik/700.css';
+import Logo from '../components/Logo.astro';
 import '../styles.css';
 import { league, standings, schedule, lastPlayedDate, team } from '../lib/strat.mjs';
 import { fmtDate, paperUrl } from '../lib/fmt.mjs';
 const { title, active = '' } = Astro.props;
 const L = league();
 const nav = [['/', 'Home', 'home'], ['/newspaper/', 'Daily News', 'newspaper'], ['/schedule/', 'Schedule', 'schedule'], ['/standings/', 'Standings', 'standings'], ['/stats/', 'Stats', 'stats'], ['/teams/', 'Teams', 'teams'], ['/trade/', 'Trades', 'trade'], ['/files/', 'Files', 'files'], ['/news/', 'News', 'news']];
-const last = lastPlayedDate();
-const finals = schedule().games.filter((g) => g.date === last && g.played);
 const leaders = standings().flatMap((c) => c.divisions.map((d) => ({ div: `${c.name.replace(' Conference', '')} ${d.label}`, t: d.rows[0] })));
 ---
 <!doctype html>
@@ -24,37 +19,28 @@ const leaders = standings().flatMap((c) => c.divisions.map((d) => ({ div: `${c.n
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title ? `${title} | UBA` : 'Unbelievable Baseball Association'}</title>
   <meta name="description" content="The Unbelievable Baseball Association, a 30-team Strat-O-Matic league since 1968." />
-  <meta name="theme-color" content="#173F31" />
-  <link rel="icon" href="/img/uba.png" />
+  <meta name="theme-color" content="#1C2340" />
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
 </head>
 <body>
   <header class="mast">
     <div class="mast-in">
-      <a href="/" class="brand"><img src="/img/uba.png" alt="" /><div><b>UBA</b><span>Unbelievable Baseball Association, since {L.established}</span></div></a>
+      <a href="/" class="brand"><Logo size={54} /><div><b>Unbelievable Baseball Association</b><span>Strat-O-Matic since {L.established}</span></div></a>
       <nav aria-label="Main">{nav.map(([href, label, key]) => <a href={href} aria-current={active === key ? 'page' : undefined}>{label}</a>)}</nav>
     </div>
   </header>
-  {finals.length > 0 && (
-  <div class="ticker" aria-label={`Final scores, ${fmtDate(last)}`}>
-    <div class="ticker-in">
-      <div class="when"><a href={`/schedule/${last}/`}>{fmtDate(last, { month: 'short', day: 'numeric' })}<small>Finals</small></a></div>
-      {finals.map((g, i) => { const aw = g.as > g.hs; return (
-        <a class="tk" href={`${paperUrl(g.date)}#${g.away.toLowerCase()}-${g.home.toLowerCase()}`} title={`${team(g.away)?.city} ${g.as}, ${team(g.home)?.city} ${g.hs}${g.inn !== 9 ? ` (${g.inn} innings)` : ''}`}>
-          <span class={`ab ${aw ? 'won' : ''}`}>{g.away}</span><span class={`rn ${aw ? 'won' : ''}`} style={`--i:${i * 2}`}>{g.as}</span>
-          <span class={`ab ${!aw ? 'won' : ''}`}>{g.home}</span><span class={`rn ${!aw ? 'won' : ''}`} style={`--i:${i * 2 + 1}`}>{g.hs}</span>
-        </a>); })}
-    </div>
-  </div>)}
+  <div class="stripe" role="presentation"></div>
   <main class="page"><slot /></main>
   <footer class="foot">
     <div class="foot-in">
+      <Logo size={88} />
       <div>
         <h4>Division leaders</h4>
         <table><tbody>{leaders.map(({ div, t }) => <tr><td>{div}</td><td><a href={`/teams/${t.abbr.toLowerCase()}/`}>{t.city} {t.nickname}</a></td><td class="num">{t.w}-{t.l}</td></tr>)}</tbody></table>
       </div>
       <div>
         <h4>The UBA</h4>
-        <p>A 30-team Strat-O-Matic Baseball league, played continuously since {L.established}. The commissioner runs the league; this site shows what he publishes.</p>
+        <p>Thirty managers, one Strat-O-Matic league, every season since {L.established}. The commissioner runs the league; this site shows what he publishes.</p>
         <p><a href="https://www.facebook.com/search/top?q=the%20uba%20(the%20unbelievable%20baseball%20association)">UBA on Facebook</a><br /><a href="/admin/">Commissioner login</a></p>
       </div>
     </div>
