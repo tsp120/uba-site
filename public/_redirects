@@ -1,0 +1,12 @@
+# Old PHP site addresses → new pages
+/uba/index.php        /             301
+/uba/                 /             301
+/uba/newspaper.php    /newspaper/   301
+/uba/schedule.php     /schedule/    301
+/uba/standings.php    /standings/   301
+/uba/stats.php        /stats/       301
+/uba/files.php        /files/       301
+/uba/teams.php        /teams/       301
+/uba/tradetool.php    /trade/       301
+/uba/addfiles.php     /admin/       301
+/uba/*                /             301

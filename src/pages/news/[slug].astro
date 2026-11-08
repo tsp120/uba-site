@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import { posts } from '../../lib/strat.mjs';
+import { fmtDate } from '../../lib/fmt.mjs';
+import { md } from '../../lib/md.mjs';
+export function getStaticPaths() { return posts().map((p) => ({ params: { slug: p.slug }, props: { p } })); }
+const { p } = Astro.props;
+---
+<Base title={p.title} active="news">
+  <article class="story" style="max-width:760px">
+    <div class="meta">{p.date && fmtDate(p.date)}</div>
+    <h1>{p.title}</h1>
+    {p.image && /^https?:\/\//.test(p.image) && <img src={p.image} alt="" style="max-width:100%;border-radius:10px;margin-bottom:1rem" />}
+    <div set:html={md(p.body)} />
+    <p><a class="btn" href="/news/">All news</a></p>
+  </article>
+</Base>

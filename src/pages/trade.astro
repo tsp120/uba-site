@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import { teamList } from '../lib/strat.mjs';
+const teams = teamList();
+---
+<Base title="Trade Assistant" active="trade">
+  <h1>Trade Assistant</h1>
+  <p class="muted">Pick up to three teams. Tick players to build a proposal, and the salary math is done for you at the bottom. Rosters come straight from each team's cap spreadsheet.</p>
+  <div class="trade">
+    {[0, 1, 2].map((i) => <div class="col"><select data-col={i} aria-label={`Team ${i + 1}`}><option value="">— Choose team {i + 1} —</option>{teams.map((t) => <option value={t.abbr}>{t.city} {t.nickname}</option>)}</select><div class="out" data-out={i}></div></div>)}
+  </div>
+  <div class="tradebox" id="tradebox" hidden><h3 style="margin:0 0 .5rem">Proposal</h3><div id="summary"></div><p style="margin:.8rem 0 0"><button class="btn sm" id="copy">Copy as text</button> <button class="btn sm" id="clear">Clear</button> <span class="small muted" id="copied"></span></p></div>
+  <script is:inline>
+  (async () => {
+    const { teams, rosters } = await (await fetch('/data/rosters.json')).json();
+    const sel = {}; // abbr -> Set(player name)
+    const money = (s) => parseFloat(String(s || '').replace(/[$,]/g, '')) || 0;
+    const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const qs = new URLSearchParams(location.search);
+    function render(i) {
+      const ab = document.querySelector(`select[data-col="${i}"]`).value; const out = document.querySelector(`[data-out="${i}"]`);
+      if (!ab) { out.innerHTML = ''; return; }
+      const R = rosters[ab]; const T = teams[ab];
+      if (!R) { out.innerHTML = '<p class="muted">No roster uploaded.</p>'; return; }
+      sel[ab] ||= new Set();
+      out.innerHTML = `<div class="teamcard" style="margin-bottom:.6rem">${T.logo ? `<img src="${T.logo}" alt="" style="width:44px;height:44px">` : ''}<div><div class="city">${esc(T.city)} ${esc(T.nickname)}</div><div class="small muted">${T.w}-${T.l} · ${R.totals.map((t) => `${esc(t.label)} ${esc(t.salary)}`).join(' · ')}</div></div></div>` +
+        R.sections.map((s) => `<h4 style="margin:1rem 0 .3rem">${esc(s.name)}</h4>` + s.groups.map((g) => `<table><thead><tr><th></th><th>${esc(g.name)}</th><th class="num">$</th><th>FA</th></tr></thead><tbody>` +
+          g.players.map((p) => `<tr data-ab="${ab}" data-n="${esc(p.n)}" class="${sel[ab].has(p.n) ? 'sel' : ''}"><td class="pick"><input type="checkbox" ${sel[ab].has(p.n) ? 'checked' : ''} aria-label="select ${esc(p.n)}"></td><td><strong>${esc(p.n)}</strong> <span class="muted">${esc(p.p)}</span><div class="small muted">${esc(p.k)}</div></td><td class="num">${esc(p.s)}</td><td>${esc(p.fa)}</td></tr>`).join('') + '</tbody></table>').join('')).join('');
+    }
+    function players(ab) { return rosters[ab]?.sections.flatMap((s) => s.groups.flatMap((g) => g.players)) || []; }
+    function summary() {
+      const active = [0, 1, 2].map((i) => document.querySelector(`select[data-col="${i}"]`).value).filter(Boolean);
+      const parts = active.map((ab) => ({ ab, list: players(ab).filter((p) => sel[ab]?.has(p.n)) })).filter((x) => x.list.length);
+      const box = document.getElementById('tradebox'); box.hidden = !parts.length; if (!parts.length) return;
+      document.getElementById('summary').innerHTML = '<div class="grid g3">' + parts.map(({ ab, list }) => `<div><strong>${esc(teams[ab].city)} sends</strong><ul style="margin:.3rem 0;padding-left:1.1rem">${list.map((p) => `<li>${esc(p.n)} <span class="muted">${esc(p.s)}</span></li>`).join('')}</ul><span class="small">Outgoing salary: <strong>$${list.reduce((a, p) => a + money(p.s), 0)}</strong></span></div>`).join('') + '</div>';
+      const u = new URL(location.href); u.search = ''; active.forEach((ab, i) => u.searchParams.set('t' + (i + 1), ab)); history.replaceState(null, '', u);
+    }
+    document.querySelectorAll('select[data-col]').forEach((s) => { const v = qs.get('t' + (+s.dataset.col + 1)); if (v && teams[v]) s.value = v; s.addEventListener('change', () => { render(s.dataset.col); summary(); }); render(s.dataset.col); });
+    document.addEventListener('change', (e) => { const tr = e.target.closest('tr[data-ab]'); if (!tr) return; const s = sel[tr.dataset.ab]; e.target.checked ? s.add(tr.dataset.n) : s.delete(tr.dataset.n); tr.classList.toggle('sel', e.target.checked); summary(); });
+    document.getElementById('clear').onclick = () => { for (const k in sel) sel[k].clear(); document.querySelectorAll('tr.sel').forEach((t) => { t.classList.remove('sel'); t.querySelector('input').checked = false; }); summary(); };
+    document.getElementById('copy').onclick = async () => { await navigator.clipboard.writeText(document.getElementById('summary').innerText.replace(/\n{2,}/g, '\n')); document.getElementById('copied').textContent = 'Copied!'; };
+  })();
+  </script>
+</Base>

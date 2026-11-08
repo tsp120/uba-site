@@ -1,0 +1,14 @@
+---
+import { team, placeOf, roster } from '../lib/strat.mjs';
+import { nth } from '../lib/fmt.mjs';
+const { ab, tab } = Astro.props;
+const t = team(ab); const p = placeOf(ab); const base = `/teams/${ab.toLowerCase()}/`;
+const tabs = [['', 'Overview'], ['roster/', 'Roster'], ['stats/', 'Stats'], ['schedule/', 'Schedule']];
+---
+<div class="teamhead">
+  {t.logo && <img src={t.logo} alt={`${t.city} ${t.nickname} logo`} />}
+  <div><h1>{t.city} {t.nickname}</h1>
+    <div class="sub">{t.w}-{t.l} · {nth(p.place)} in {t.confName} {t.divLabel}{p.gb ? ` · ${p.gb} GB` : ''}</div>
+    <dl class="kv small"><dt>Owner</dt><dd>{t.owner || '—'}</dd><dt>Manager</dt><dd>{t.manager || '—'}</dd></dl></div>
+</div>
+<nav class="tabs">{tabs.map(([href, label]) => <a href={base + href} class={tab === label ? 'on' : ''}>{label}</a>)}</nav>

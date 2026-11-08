@@ -1,0 +1,23 @@
+---
+import Base from '../../../layouts/Base.astro';
+import TeamHeader from '../../../components/TeamHeader.astro';
+import { teamList, team, roster } from '../../../lib/strat.mjs';
+export function getStaticPaths() { return teamList().map((t) => ({ params: { abbr: t.abbr.toLowerCase() } })); }
+const ab = Astro.params.abbr.toUpperCase(); const t = team(ab); const R = roster(ab);
+---
+<Base title={`${t.city} roster`} active="teams">
+  <TeamHeader ab={ab} tab="Roster" />
+  {!R ? <p>No roster spreadsheet has been uploaded for this team yet.</p> : <>
+    <p class="noprint"><a class="btn" href={`/rosters/${ab}.xlsx`} download>Download spreadsheet</a> <span class="muted small">{R.season && `${R.season} roster`} · from the commissioner's cap sheet</span></p>
+    {R.totals.length > 0 && <p>{R.totals.map((x) => <span class="pill" style="margin-right:.4rem">{x.label}: {x.salary}</span>)}</p>}
+    {R.sections.map((s) => <section>
+      <h2 class="major">{s.name}</h2>
+      {s.groups.map((g) => <>
+        <h3>{g.name}</h3>
+        <div class="tscroll"><table class="sortable">
+          <thead><tr><th>Name</th><th>Pos</th><th class="num">Salary</th><th>FA</th>{g.columns.map((c) => <th class="num">{c}</th>)}<th>Notes</th></tr></thead>
+          <tbody>{g.players.map((p) => <tr><td class="nowrap">{p.name}</td><td>{p.pos}</td><td class="num">{p.salary}</td><td>{p.fa}</td>{g.columns.map((c) => <td class="num">{p.stats[c]}</td>)}<td class="small">{p.notes}</td></tr>)}</tbody>
+        </table></div></>)}
+    </section>)}
+  </>}
+</Base>

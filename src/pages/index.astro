@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import Score from '../components/Score.astro';
+import { schedule, lastPlayedDate, newspaper, newspaperDates, storyHeadline, posts, standings, team } from '../lib/strat.mjs';
+import { fmtDate, paperUrl, gbStr } from '../lib/fmt.mjs';
+const last = lastPlayedDate();
+const scores = schedule().games.filter((g) => g.date === last);
+const upcoming = schedule().games.filter((g) => !g.played);
+const nextDate = upcoming[0]?.date;
+// Feed = latest newspapers' game stories plus commish posts, newest first.
+const dates = newspaperDates().slice(-3).reverse();
+const stories = dates.flatMap((d) => newspaper(d).stories.map((s) => ({ ...s, href: `${paperUrl(d)}#${s.id}`, title: storyHeadline(s) })));
+const featured = stories[0];
+const recent = posts().slice(0, 3);
+const resources = [['/files/', '▤', 'Files', 'Free agent bid book, rookie list, rule book and the league archive.'], ['/trade/', '⇄', 'Trade Assistant', 'Line up to three rosters side by side, salaries included, and build a deal.'],
+  ['/teams/', '⚾', 'Teams', 'Every club: owners, managers, rosters, stats and schedules.'], ['/schedule/', '▦', 'Schedule', "Today's games, scores and the full season calendar."],
+  ['/standings/', '#', 'Standings', 'Division races and the wild card picture.'], ['/stats/', '%', 'Statistics', 'League leaders plus sortable team and player stats.']];
+---
+<Base title="" active="home">
+  {featured && (
+  <section class="hero">
+    <div class="story">
+      <div class="kicker">{fmtDate(featured.date)} · Game of the day</div>
+      <h1>{featured.title}</h1>
+      <p class="big">{featured.lead}</p>
+      {featured.paragraphs[1] && <p>{featured.paragraphs[1]}</p>}
+      <a class="btn fill" href={featured.href}>Read story</a>
+    </div>
+    <div>
+      <h2 class="major">Scores · {fmtDate(last, { month: 'short', day: 'numeric' })}</h2>
+      <div class="scores" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">{scores.slice(0, 8).map((g) => <Score g={g} />)}</div>
+      <p class="small"><a href={`/schedule/${last}/`}>All {scores.length} games →</a>{nextDate && <> · <a href={`/schedule/${nextDate}/`}>Next game day →</a></>}</p>
+    </div>
+  </section>)}
+
+  {recent.length > 0 && (
+  <section>
+    <h2 class="major">From the Commissioner</h2>
+    <div class="posts">{recent.map((p) => <article class="post"><div class="meta">{p.date && fmtDate(p.date)}</div><h3><a href={`/news/${p.slug}/`}>{p.title}</a></h3><p>{p.excerpt}…</p></article>)}</div>
+  </section>)}
+
+  <section>
+    <h2 class="major">Resources</h2>
+    <div class="features">{resources.map(([href, ic, h, p]) => <a class="feature plain" href={href}><div class="ic"><span>{ic}</span></div><div><h3>{h}</h3><p>{p}</p></div></a>)}</div>
+  </section>
+
+  <section>
+    <h2 class="major">Recent Game Stories</h2>
+    <div class="posts">{stories.filter((s) => s !== featured).slice(0, 12).map((s) => (
+      <article class="post"><div class="meta">{fmtDate(s.date)}</div><h3><a href={s.href}>{s.title}</a></h3><p>{s.lead}</p></article>))}</div>
+    <p><a class="btn" href={paperUrl(dates[0])}>Today's newspaper</a></p>
+  </section>
+</Base>

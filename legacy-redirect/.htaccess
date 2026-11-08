@@ -1,0 +1,12 @@
+# Upload this as the ONLY file in the old AwardSpace site (after deleting everything else),
+# replacing NEW-SITE with your new address, e.g. https://uba-site.pages.dev
+RewriteEngine On
+RewriteRule ^uba/index\.php$     NEW-SITE/            [R=301,L]
+RewriteRule ^uba/newspaper\.php$ NEW-SITE/newspaper/  [R=301,L]
+RewriteRule ^uba/schedule\.php$  NEW-SITE/schedule/   [R=301,L]
+RewriteRule ^uba/standings\.php$ NEW-SITE/standings/  [R=301,L]
+RewriteRule ^uba/stats\.php$     NEW-SITE/stats/      [R=301,L]
+RewriteRule ^uba/files\.php$     NEW-SITE/files/      [R=301,L]
+RewriteRule ^uba/teams\.php$     NEW-SITE/teams/      [R=301,L]
+RewriteRule ^uba/tradetool\.php$ NEW-SITE/trade/      [R=301,L]
+RewriteRule ^(.*)$               NEW-SITE/            [R=301,L]

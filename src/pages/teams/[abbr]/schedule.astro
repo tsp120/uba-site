@@ -1,0 +1,30 @@
+---
+import Base from '../../../layouts/Base.astro';
+import TeamHeader from '../../../components/TeamHeader.astro';
+import TeamLink from '../../../components/TeamLink.astro';
+import { teamList, team, teamSchedule } from '../../../lib/strat.mjs';
+import { shortDate, paperUrl } from '../../../lib/fmt.mjs';
+import fs from 'node:fs';
+export function getStaticPaths() { return teamList().map((t) => ({ params: { abbr: t.abbr.toLowerCase() } })); }
+const ab = Astro.params.abbr.toUpperCase(); const t = team(ab); const S = teamSchedule(ab);
+const printable = fs.existsSync(`public/schedules/${ab}.pdf`);
+const months = [...new Set(S.map((g) => g.date.slice(0, 7)))];
+const byDate = Object.groupBy ? Object.groupBy(S, (g) => g.date) : S.reduce((o, g) => ((o[g.date] ||= []).push(g), o), {});
+const monthName = (ym) => new Date(ym + '-15T12:00:00Z').toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+const cells = (ym) => { const [y, m] = ym.split('-').map(Number); const first = new Date(Date.UTC(y, m - 1, 1)).getUTCDay(); const n = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  return [...Array(first).fill(null), ...Array.from({ length: n }, (_, i) => `${ym}-${String(i + 1).padStart(2, '0')}`)]; };
+---
+<Base title={`${t.city} schedule`} active="teams">
+  <TeamHeader ab={ab} tab="Schedule" />
+  <p class="noprint"><a class="btn" href="#list">List</a> <a class="btn" href="#calendar">Calendar</a> {printable && <a class="btn" href={`/schedules/${ab}.pdf`}>Printable PDF</a>}</p>
+  <section id="list"><div class="tscroll"><table>
+    <thead><tr><th>Date</th><th></th><th>Opponent</th><th class="center">Result</th><th>Decision</th></tr></thead>
+    <tbody>{S.map((g) => <tr><td class="nowrap">{g.played ? <a href={`${paperUrl(g.date)}#${g.away.toLowerCase()}-${g.home.toLowerCase()}`}>{shortDate(g.date)}</a> : shortDate(g.date)}</td><td class="muted">{g.at}</td><td><TeamLink ab={g.opp} /></td>
+      <td class="center nowrap">{g.result ? <><span class={g.result}>{g.result}</span> {g.score}{g.inn !== 9 ? ` (${g.inn})` : ''}</> : ''}</td><td class="small muted">{g.played ? `W ${g.win} · L ${g.loss}` : ''}</td></tr>)}</tbody>
+  </table></div></section>
+  <section id="calendar">{months.map((ym) => <><h3>{monthName(ym)}</h3><div class="cal" style="margin-bottom:1.5rem">
+    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => <div class="dow">{d}</div>)}
+    {cells(ym).map((d) => !d ? <div class="day off"></div> : <div class={`day ${byDate[d] ? '' : 'off'}`}><div class="dn">{+d.slice(8)}</div>
+      {(byDate[d] || []).map((g) => <div><span class="muted">{g.at}</span> {team(g.opp)?.logo && <img src={team(g.opp).logo} alt="" loading="lazy" />} {g.opp}{g.result && <div><span class={g.result}>{g.result}</span> {g.score}</div>}</div>)}</div>)}
+  </div></>)}</section>
+</Base>

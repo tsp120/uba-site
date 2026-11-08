@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+public/logos/
+public/files/
+public/schedules/
+public/rosters/
+public/data/
+.dev.vars
+.cache/

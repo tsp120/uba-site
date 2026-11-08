@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex" />
+<title>Commish · UBA</title>
+<link rel="icon" href="/img/uba.png" />
+<link rel="stylesheet" href="/admin/admin.css" />
+</head>
+<body>
+<header><a href="/"><img src="/img/uba.png" alt="UBA" height="44" /></a><strong>Commissioner's Office</strong><span id="who"></span></header>
+<main>
+  <section id="login" hidden>
+    <h1>Log in</h1>
+    <form id="loginForm"><label>Password <input type="password" id="pw" autocomplete="current-password" required autofocus /></label><button class="btn fill">Log in</button><p class="err" id="loginErr"></p></form>
+  </section>
+
+  <section id="app" hidden>
+    <nav class="tabs"><button data-tab="publish" class="on">Publish files</button><button data-tab="news">News</button><button data-tab="files">Files page</button><button data-tab="league">Teams &amp; managers</button></nav>
+
+    <div data-pane="publish">
+      <h2>Publish files</h2>
+      <p>Drag in whatever Strat-O-Matic produced (the whole <b>Web Builder</b> folder, the day's <b>newspaper</b> (<code>YYYYMMDDDAY.htm</code>), <b>schedule.htm</b> / <b>results.htm</b>, roster <b>cap</b> spreadsheets, the <b>real stats</b> CSVs) and any document for the Files page. The site figures out where each one goes. Nothing goes live until you press Publish.</p>
+      <div id="drop" tabindex="0">
+        <p><b>Drop files or a folder here</b></p>
+        <p><label class="btn">Choose files<input type="file" id="pickFiles" multiple hidden /></label> <label class="btn">Choose a folder<input type="file" id="pickDir" webkitdirectory multiple hidden /></label></p>
+      </div>
+      <div id="plan"></div>
+      <p id="pubbar" hidden><button class="btn fill" id="publish">Publish</button> <button class="btn" id="clearPlan">Clear</button> <span id="pubmsg"></span></p>
+      <div id="result"></div>
+    </div>
+
+    <div data-pane="news" hidden>
+      <h2>Post a story</h2>
+      <p class="muted">Game stories from the Strat newspaper appear automatically. Use this for announcements, trades, draft results, commentary, and the like.</p>
+      <form id="newsForm">
+        <input type="hidden" id="nFile" />
+        <label>Title <input id="nTitle" required maxlength="140" /></label>
+        <div class="row"><label>Date <input type="date" id="nDate" /></label><label>Image link (optional, https://…) <input id="nImage" /></label></div>
+        <label>Story <textarea id="nBody" rows="14" required placeholder="Blank line = new paragraph. **bold**, *italic*, [link](https://…), - bullet"></textarea></label>
+        <button class="btn fill">Publish story</button> <button type="button" class="btn" id="nNew">New</button> <span id="nMsg"></span>
+      </form>
+      <h3>Existing posts</h3><ul id="postList"></ul>
+    </div>
+
+    <div data-pane="files" hidden>
+      <h2>Files page</h2>
+      <p class="muted">To add or replace a document, drop it on <b>Publish files</b>. Here you can rename, move between sections, or remove.</p>
+      <table><thead><tr><th>Title</th><th>File</th><th>Section</th><th></th></tr></thead><tbody id="fileRows"></tbody></table>
+      <p><button class="btn fill" id="saveFiles">Save changes</button> <span id="fMsg"></span></p>
+    </div>
+
+    <div data-pane="league" hidden>
+      <h2>Teams &amp; managers</h2>
+      <p class="muted">Records, divisions and stats come from Strat. Here you only set names, owners and managers, and team logos.</p>
+      <table><thead><tr><th></th><th>City</th><th>Nickname</th><th>Owner</th><th>Manager</th><th>Logo</th></tr></thead><tbody id="teamRows"></tbody></table>
+      <p><label>Wild-card spots per conference <input type="number" id="wc" min="0" max="6" style="width:4rem" /></label></p>
+      <p><button class="btn fill" id="saveLeague">Save changes</button> <span id="lMsg"></span></p>
+    </div>
+    <p class="muted small" id="foot">Changes are saved as a new version of the site and go live in about two minutes. Every change is kept in history and can be undone.</p>
+  </section>
+</main>
+<script src="/admin/admin.js"></script>
+</body>
+</html>

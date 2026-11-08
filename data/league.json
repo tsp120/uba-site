@@ -1,0 +1,278 @@
+{
+  "name": "Unbelievable Baseball Association",
+  "short": "UBA",
+  "established": 1968,
+  "wildcards": 2,
+  "teams": [
+    {
+      "abbr": "BUF",
+      "legacyId": 1,
+      "city": "Buffalo",
+      "nickname": "Bisons",
+      "owner": "Sean Foisy",
+      "manager": "Willie Randolph",
+      "logo": "BUF.jpg"
+    },
+    {
+      "abbr": "MIL",
+      "legacyId": 3,
+      "city": "Milwaukee",
+      "nickname": "Stars",
+      "owner": "Earl Kirk",
+      "manager": "Davey Johnson",
+      "logo": "MIL.jpg"
+    },
+    {
+      "abbr": "TOL",
+      "legacyId": 5,
+      "city": "Toledo",
+      "nickname": "Mud Hens",
+      "owner": "Kathleen Phelps",
+      "manager": "Caitlin Clark",
+      "logo": "TOL.jpg"
+    },
+    {
+      "abbr": "PIT",
+      "legacyId": 2,
+      "city": "Pittsburgh",
+      "nickname": "Alleghenys",
+      "owner": "Paul Skurda",
+      "manager": "Bud Abbott",
+      "logo": "PIT.png"
+    },
+    {
+      "abbr": "NYK",
+      "legacyId": 4,
+      "city": "New York",
+      "nickname": "Highlanders",
+      "owner": "Roland Schlehuber",
+      "manager": "Eddie Murray",
+      "logo": "NYK.jpg"
+    },
+    {
+      "abbr": "MIA",
+      "legacyId": 10,
+      "city": "Miami",
+      "nickname": "Marlins",
+      "owner": "Bryson Turner",
+      "manager": "Joe Girardi",
+      "logo": "MIA.jpg"
+    },
+    {
+      "abbr": "MEM",
+      "legacyId": 6,
+      "city": "Memphis",
+      "nickname": "Marauders",
+      "owner": "Joe Phelps",
+      "manager": "Joe Rudi",
+      "logo": "MEM.png"
+    },
+    {
+      "abbr": "NSH",
+      "legacyId": 7,
+      "city": "Nashville",
+      "nickname": "Sounds",
+      "owner": "Jason Buckner",
+      "manager": "Ricky Vaughn",
+      "logo": "NSH.png"
+    },
+    {
+      "abbr": "NOR",
+      "legacyId": 8,
+      "city": "New Orleans",
+      "nickname": "Blues",
+      "owner": "Craig Phelps",
+      "manager": "Jim Palmer",
+      "logo": "NOR.png"
+    },
+    {
+      "abbr": "LOU",
+      "legacyId": 9,
+      "city": "Louisville",
+      "nickname": "Sluggers",
+      "owner": "Tim Puzycki",
+      "manager": "Joe Orsulak",
+      "logo": "LOU.png"
+    },
+    {
+      "abbr": "RCH",
+      "legacyId": 15,
+      "city": "Richmond",
+      "nickname": "Lab Rats",
+      "owner": "Joe Era",
+      "manager": "George Smiley",
+      "logo": "RCH.jpg"
+    },
+    {
+      "abbr": "WAS",
+      "legacyId": 13,
+      "city": "Washington",
+      "nickname": "Federals",
+      "owner": "R. J. Burks",
+      "manager": "Richie Zisk",
+      "logo": "WAS.jpg"
+    },
+    {
+      "abbr": "ATL",
+      "legacyId": 12,
+      "city": "Atlanta",
+      "nickname": "Chiefs",
+      "owner": "Mike Buzgierski",
+      "manager": "John Lennon",
+      "logo": "ATL.png"
+    },
+    {
+      "abbr": "BAL",
+      "legacyId": 14,
+      "city": "Baltimore",
+      "nickname": "Elite Giants",
+      "owner": "Paul Frick",
+      "manager": "Mark Hamill",
+      "logo": "BAL.jpg"
+    },
+    {
+      "abbr": "JAX",
+      "legacyId": 11,
+      "city": "Jacksonville",
+      "nickname": "Jacks",
+      "owner": "Jackson Jost",
+      "manager": "Yoda Berra",
+      "logo": "JAX.png"
+    },
+    {
+      "abbr": "IND",
+      "legacyId": 17,
+      "city": "Indianapolis",
+      "nickname": "Longhorns",
+      "owner": "Billy Goodnow",
+      "manager": "Yadier Molina",
+      "logo": "IND.jpg"
+    },
+    {
+      "abbr": "DAL",
+      "legacyId": 19,
+      "city": "Dallas",
+      "nickname": "Colts",
+      "owner": "Riley Burks",
+      "manager": "Steven Jayne",
+      "logo": "DAL.gif"
+    },
+    {
+      "abbr": "STL",
+      "legacyId": 18,
+      "city": "St. Louis",
+      "nickname": "Browns",
+      "owner": "Dan Phelps",
+      "manager": "Edgar Martinez",
+      "logo": "STL.png"
+    },
+    {
+      "abbr": "CHO",
+      "legacyId": 20,
+      "city": "Chicago",
+      "nickname": "Otters",
+      "owner": "Mark Dorsey",
+      "manager": "Jim Leyland",
+      "logo": "CHO.jpg"
+    },
+    {
+      "abbr": "KCM",
+      "legacyId": 16,
+      "city": "Kansas City",
+      "nickname": "Monarchs",
+      "owner": "Wil Kramer",
+      "manager": "Ken Griffey, Jr.",
+      "logo": "KCM.png"
+    },
+    {
+      "abbr": "SDG",
+      "legacyId": 22,
+      "city": "San Diego",
+      "nickname": "Braves",
+      "owner": "Michael Farruggia",
+      "manager": "Jimy Williams",
+      "logo": "SDG.jpg"
+    },
+    {
+      "abbr": "SAN",
+      "legacyId": 21,
+      "city": "San Antonio",
+      "nickname": "Wranglers",
+      "owner": "Evan Rosenberg",
+      "manager": "Simone Biles",
+      "logo": "SAN.jpg"
+    },
+    {
+      "abbr": "MEX",
+      "legacyId": 24,
+      "city": "Mexico City",
+      "nickname": "Aguilas Doradas",
+      "owner": "Alan Ashford",
+      "manager": "John Smoltz",
+      "logo": "MEX.jpg"
+    },
+    {
+      "abbr": "HWI",
+      "legacyId": 23,
+      "city": "Hawaii",
+      "nickname": "Islanders",
+      "owner": "Justin Rosenberg",
+      "manager": "Felipe Alou",
+      "logo": "HWI.png"
+    },
+    {
+      "abbr": "SLC",
+      "legacyId": 25,
+      "city": "Salt Lake City",
+      "nickname": "Saints",
+      "owner": "Matthew Schoolcraft",
+      "manager": "Tony Gwynn",
+      "logo": "SLC.png"
+    },
+    {
+      "abbr": "SFS",
+      "legacyId": 30,
+      "city": "San Francisco",
+      "nickname": "Seals",
+      "owner": "Steve Jost",
+      "manager": "Willie Mays",
+      "logo": "SFS.png"
+    },
+    {
+      "abbr": "SEA",
+      "legacyId": 29,
+      "city": "Seattle",
+      "nickname": "Knights",
+      "owner": "Steve Matheis",
+      "manager": "Lou Piniella",
+      "logo": "SEA.png"
+    },
+    {
+      "abbr": "VAN",
+      "legacyId": 28,
+      "city": "Vancouver",
+      "nickname": "Death Lemurs",
+      "owner": "Stephen Buckner",
+      "manager": "Ted Lasso",
+      "logo": "VAN.jpg"
+    },
+    {
+      "abbr": "OAK",
+      "legacyId": 27,
+      "city": "Oakland",
+      "nickname": "Black Panther Party",
+      "owner": "Ben/Angus Phelps",
+      "manager": "Frank Robinson",
+      "logo": "OAK.jpeg"
+    },
+    {
+      "abbr": "LAN",
+      "legacyId": 26,
+      "city": "Los Angeles",
+      "nickname": "Angels",
+      "owner": "Betsy Schlehuber",
+      "manager": "Mike Sciosia",
+      "logo": "LAN.png"
+    }
+  ]
+}

@@ -1,0 +1,393 @@
+[
+  {
+    "title": "2027 Free Agent Bid Book",
+    "file": "2027_Free_Agents.xlsx",
+    "updated": "2026-11-06",
+    "section": "current"
+  },
+  {
+    "title": "2027 Rookie Draft Order",
+    "file": "2027_Rookie_Draft_Order.xlsx",
+    "updated": "2026-11-06",
+    "section": "current"
+  },
+  {
+    "title": "2027 Rookie List",
+    "file": "2027_Rookie_List.xlsx",
+    "updated": "2026-10-13",
+    "section": "current"
+  },
+  {
+    "title": "No Hitters",
+    "file": "nohitter.docx",
+    "updated": "2025-11-07",
+    "section": "current"
+  },
+  {
+    "title": "2015 Draft Order",
+    "file": "2015_Draft_Order.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2015
+  },
+  {
+    "title": "2015 Free Agents",
+    "file": "2015_free_agents.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2015
+  },
+  {
+    "title": "2015 Rule Book",
+    "file": "2015rulebook.docx",
+    "updated": null,
+    "section": "archive",
+    "season": 2015
+  },
+  {
+    "title": "2016 Free Agents",
+    "file": "2016_Free_Agents.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2016
+  },
+  {
+    "title": "2016 Free Agents",
+    "file": "2016freeagents.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2016
+  },
+  {
+    "title": "2016 Rule Book",
+    "file": "2016rulebook.docx",
+    "updated": null,
+    "section": "archive",
+    "season": 2016
+  },
+  {
+    "title": "2017 Draft Order",
+    "file": "2017_Draft_Order.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2017
+  },
+  {
+    "title": "2017 Free Agents",
+    "file": "2017freeagents.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2017
+  },
+  {
+    "title": "2017 Rule Book",
+    "file": "2017rulebook.docx",
+    "updated": null,
+    "section": "archive",
+    "season": 2017
+  },
+  {
+    "title": "2018 Draft Order",
+    "file": "2018DraftOrder.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2018
+  },
+  {
+    "title": "2018 Free Agents",
+    "file": "2018FreeAgents.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2018
+  },
+  {
+    "title": "2018 Rookie List",
+    "file": "2018RookieList.docx",
+    "updated": null,
+    "section": "archive",
+    "season": 2018
+  },
+  {
+    "title": "2018 Rookie List",
+    "file": "2018RookieList.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2018
+  },
+  {
+    "title": "2019 Free Agents",
+    "file": "2019FreeAgents.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2019
+  },
+  {
+    "title": "2019 Rookie List",
+    "file": "2019RookieList.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2019
+  },
+  {
+    "title": "2019 Draft Order",
+    "file": "2019draftorder.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2019
+  },
+  {
+    "title": "2020 Free Agents",
+    "file": "2020FreeAgent.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2020
+  },
+  {
+    "title": "2020 Rookie List",
+    "file": "2020RookieList.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2020
+  },
+  {
+    "title": "2020 Draft Order",
+    "file": "2020draftorder.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2020
+  },
+  {
+    "title": "2020 Rule Book",
+    "file": "2020rulebook.pdf",
+    "updated": null,
+    "section": "archive",
+    "season": 2020
+  },
+  {
+    "title": "2020 Team-to-Team Chart",
+    "file": "2020teambyteam.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2020
+  },
+  {
+    "title": "2021 Free Agent Bid Book",
+    "file": "2021_Free_Agent_Bid_Book.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2021
+  },
+  {
+    "title": "2021 Rookie Draft Order",
+    "file": "2021_Rookie_Draft_Order.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2021
+  },
+  {
+    "title": "2021 Rookie List",
+    "file": "2021_Rookie_List.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2021
+  },
+  {
+    "title": "2021 Rule Book",
+    "file": "2021_Rule_Book.pdf",
+    "updated": null,
+    "section": "archive",
+    "season": 2021
+  },
+  {
+    "title": "2022 Free Agent Bid Book",
+    "file": "2022_Free_Agent_Bid_Book.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2022
+  },
+  {
+    "title": "2022 Rookie Draft Order",
+    "file": "2022_Rookie_Draft_Order.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2022
+  },
+  {
+    "title": "2022 Rookie List",
+    "file": "2022_Rookie_List.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2022
+  },
+  {
+    "title": "2022 Rule Book",
+    "file": "2022_Rule_Book.pdf",
+    "updated": null,
+    "section": "archive",
+    "season": 2022
+  },
+  {
+    "title": "2023 Free Agent Bid Book",
+    "file": "2023_Free_Agent_Bid_Book.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2023
+  },
+  {
+    "title": "2023 Rookie Draft Order",
+    "file": "2023_Rookie_Draft_Order.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2023
+  },
+  {
+    "title": "2023 Rookie List",
+    "file": "2023_Rookie_List.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2023
+  },
+  {
+    "title": "2023 Rule Book",
+    "file": "2023_Rule_Book.pdf",
+    "updated": null,
+    "section": "archive",
+    "season": 2023
+  },
+  {
+    "title": "2023 Team-to-Team Chart",
+    "file": "2023_Team_to_Team_Chart.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2023
+  },
+  {
+    "title": "2024 Draft Order",
+    "file": "2024_Draft_Order.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2024
+  },
+  {
+    "title": "2024 Free Agent Bid Book",
+    "file": "2024_Free_Agent_Bid_Book.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2024
+  },
+  {
+    "title": "2024 Rookie List",
+    "file": "2024_Rookie_List.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2024
+  },
+  {
+    "title": "2024 Rule Book",
+    "file": "2024_Rule_Book.pdf",
+    "updated": null,
+    "section": "archive",
+    "season": 2024
+  },
+  {
+    "title": "2024 Team-to-Team Chart",
+    "file": "2024_Team_to_Team.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2024
+  },
+  {
+    "title": "2025 Draft Order",
+    "file": "2025_Draft_Order.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2025
+  },
+  {
+    "title": "2025 Free Agents",
+    "file": "2025_Free_Agents.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2025
+  },
+  {
+    "title": "2025 Rookie List",
+    "file": "2025_Rookie_List.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2025
+  },
+  {
+    "title": "2025 Rule Book",
+    "file": "2025_Rule_Book.pdf",
+    "updated": null,
+    "section": "archive",
+    "season": 2025
+  },
+  {
+    "title": "2025 Team-to-Team Chart",
+    "file": "2025_Team_to_Team.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2025
+  },
+  {
+    "title": "2026 Free Agents",
+    "file": "2026_Free_Agents.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2026
+  },
+  {
+    "title": "2026 Rookie Draft Order",
+    "file": "2026_Rookie_Draft_Order.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2026
+  },
+  {
+    "title": "2026 Rookie List",
+    "file": "2026_Rookie_List.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2026
+  },
+  {
+    "title": "2026 Rule Book",
+    "file": "2026_Rule_Book.pdf",
+    "updated": null,
+    "section": "archive",
+    "season": 2026
+  },
+  {
+    "title": "2026 Team-to-Team Chart",
+    "file": "2026_Team_to_Team.xlsx",
+    "updated": null,
+    "section": "archive",
+    "season": 2026
+  },
+  {
+    "title": "UBA Champions",
+    "file": "ubachamps.doc",
+    "updated": null,
+    "section": "history"
+  },
+  {
+    "title": "Year-by-Year Standings",
+    "file": "yearbyyear.xls",
+    "updated": null,
+    "section": "history"
+  },
+  {
+    "title": "Record Book",
+    "file": "recordbook.xls",
+    "updated": null,
+    "section": "history"
+  },
+  {
+    "title": "All-Stars",
+    "file": "all_stars.docx",
+    "updated": null,
+    "section": "history"
+  }
+]

@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import TeamLink from '../components/TeamLink.astro';
+import { standings, league, teamSchedule } from '../lib/strat.mjs';
+import { pct, gbStr } from '../lib/fmt.mjs';
+const C = standings();
+const last10 = (ab) => { const g = teamSchedule(ab).filter((x) => x.played).slice(-10); const w = g.filter((x) => x.result === 'W').length; return `${w}-${g.length - w}`; };
+const streak = (ab) => { const g = teamSchedule(ab).filter((x) => x.played).reverse(); if (!g.length) return ''; let n = 0; for (const x of g) { if (x.result === g[0].result) n++; else break; } return `${g[0].result}${n}`; };
+---
+<Base title="Standings" active="standings">
+  <h1>{league().season} Standings</h1>
+  <div class="grid g2">
+    {C.map((c) => (
+      <section>
+        <h2 class="major">{c.name}</h2>
+        <div class="tscroll"><table>
+          <thead><tr><th>Team</th><th class="num">W</th><th class="num">L</th><th class="num">Pct</th><th class="num">GB</th><th class="num">Home</th><th class="num">Road</th><th class="num">L10</th><th class="num">Strk</th></tr></thead>
+          {c.divisions.map((d) => (<tbody>
+            <tr class="divhead"><td colspan="9">{d.label}</td></tr>
+            {d.rows.map((r, i) => <tr class={i === 0 ? 'lead-row' : ''}><td><TeamLink ab={r.abbr} /></td><td class="num">{r.w}</td><td class="num">{r.l}</td><td class="num">{pct(r.pct)}</td><td class="num">{gbStr(r.gb)}</td><td class="num">{r.home}</td><td class="num">{r.road}</td><td class="num">{last10(r.abbr)}</td><td class="num">{streak(r.abbr)}</td></tr>)}
+          </tbody>))}
+        </table></div>
+        <h3 style="margin-top:1.5rem">Wild Card</h3>
+        <div class="tscroll"><table>
+          <thead><tr><th>Team</th><th class="num">W</th><th class="num">L</th><th class="num">Pct</th><th class="num">WCGB</th></tr></thead>
+          <tbody>{c.wildcard.slice(0, 8).map((r, i) => <tr class={i === c.spots - 1 ? 'cutline' : ''}><td><TeamLink ab={r.abbr} /></td><td class="num">{r.w}</td><td class="num">{r.l}</td><td class="num">{pct(r.pct)}</td><td class="num">{gbStr(r.gb)}</td></tr>)}</tbody>
+        </table></div>
+        <p class="muted small">Dashed line marks the last wild-card spot ({c.spots} per conference).</p>
+      </section>))}
+  </div>
+</Base>

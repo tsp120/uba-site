@@ -1,0 +1,6 @@
+# Copy to .dev.vars for local testing (never commit .dev.vars). In Cloudflare set these as encrypted secrets.
+ADMIN_PASSWORD=choose-a-long-passphrase
+SESSION_SECRET=paste-64-random-characters-here
+GITHUB_TOKEN=github_pat_xxx   # fine-grained token: this repo only, Contents read/write
+GITHUB_REPO=your-github-name/uba-site
+GITHUB_BRANCH=main

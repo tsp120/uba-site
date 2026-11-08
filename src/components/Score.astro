@@ -1,0 +1,18 @@
+---
+import { team } from '../lib/strat.mjs';
+import { paperUrl } from '../lib/fmt.mjs';
+const { g } = Astro.props;
+const rows = [[g.away, g.as, g.ah, g.ae], [g.home, g.hs, g.hh, g.he]];
+const winner = g.played ? (g.as > g.hs ? g.away : g.home) : null;
+---
+<div class="score">
+  <table>
+    <thead><tr><th>{g.played ? (g.inn !== 9 ? `Final/${g.inn}` : 'Final') : 'Upcoming'}</th>{g.played ? <><th class="num">R</th><th class="num">H</th><th class="num">E</th></> : <th class="num">W-L</th>}</tr></thead>
+    <tbody>{rows.map(([ab, r, h, e]) => { const t = team(ab); return (
+      <tr class={winner && winner !== ab ? 'lose' : ''}>
+        <td class="nm">{t?.logo && <img class="logo-sm" src={t.logo} alt="" loading="lazy" />} <a class="plain" href={`/teams/${ab.toLowerCase()}/`} title={t ? `${t.city} ${t.nickname}` : ab}>{t ? t.city : ab}</a></td>
+        {g.played ? <><td class="num r">{r}</td><td class="num">{h}</td><td class="num">{e}</td></> : <td class="num">{t ? `${t.w}-${t.l}` : ''}</td>}
+      </tr>); })}</tbody>
+  </table>
+  {g.played && <div class="foot"><span>W {g.win.replace(/\s*\(.*/, '')} · L {g.loss.replace(/\s*\(.*/, '')}</span><a href={`${paperUrl(g.date)}#${g.away.toLowerCase()}-${g.home.toLowerCase()}`}>Story</a></div>}
+</div>

@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import TeamLink from '../components/TeamLink.astro';
+import { leaders, teamTotals, players, league } from '../lib/strat.mjs';
+const LD = leaders(); const T = teamTotals(); const P = players();
+const show = ['Batting Average', 'Home Runs', 'Runs Batted In', 'Hits', 'Stolen Bases', 'On Base Pct', 'Slugging Pct', 'Runs Scored', 'Wins', 'ERA', 'Strikeouts', 'Saves', 'Innings Pitched', 'Winning Pct', 'K / 9 IP', 'Complete Games'];
+const top = show.map((t) => LD.find((l) => l.title === t)).filter(Boolean);
+const bat = Object.entries(T.batting); const pit = Object.entries(T.pitching);
+const bcols = [['Avg', 'AVG'], ['OB%', 'OBP'], ['Slug%', 'SLG'], ['G', 'G'], ['AB', 'AB'], ['R', 'R'], ['H', 'H'], ['2B', '2B'], ['3B', '3B'], ['HR', 'HR'], ['RBI', 'RBI'], ['BB', 'BB'], ['K', 'SO'], ['SB', 'SB'], ['CS', 'CS'], ['HP', 'HBP'], ['GDP', 'GDP'], ['TB', 'TB']];
+const pcols = [['ERA', 'ERA'], ['W', 'W'], ['L', 'L'], ['IP', 'IP'], ['H', 'H'], ['R', 'R'], ['ER', 'ER'], ['HR', 'HR'], ['BB', 'BB'], ['K', 'SO'], ['CG', 'CG'], ['Sho', 'SHO'], ['Sv', 'SV'], ['WP', 'WP'], ['Bk', 'BK']];
+const qualPA = 3.1 * 162 * 0; // all players listed; sort + filter in browser
+const B = P.batters.filter((p) => +p.pa > 0); const Pi = P.pitchers.filter((p) => p.outs > 0);
+---
+<Base title="Stats" active="stats">
+  <h1>{league().season} Statistics</h1>
+  <div class="tabs"><a href="#leaders" class="on">Leaders</a><a href="#team-bat">Team Batting</a><a href="#team-pit">Team Pitching</a><a href="#players-bat">All Batters</a><a href="#players-pit">All Pitchers</a></div>
+  <section id="leaders">
+    <div class="grid g4">{top.map((l) => (
+      <div class="card"><h4>{l.title}</h4><table class="small"><tbody>{l.rows.slice(0, 5).map((r, i) => <tr><td class="muted">{i + 1}</td><td>{r.name}</td><td><TeamLink ab={r.team} mode="abbr" logo={false} /></td><td class="num"><strong>{r.value}</strong></td></tr>)}</tbody></table></div>))}
+    </div>
+    <details style="margin-top:1rem"><summary class="btn sm">All {LD.length} leaderboards</summary>
+      <div class="grid g4" style="margin-top:1rem">{LD.filter((l) => !top.includes(l)).map((l) => (
+        <div class="card"><h4>{l.title}</h4><table class="small"><tbody>{l.rows.map((r, i) => <tr><td class="muted">{i + 1}</td><td>{r.name}</td><td>{r.team}</td><td class="num">{r.value}</td></tr>)}</tbody></table></div>))}</div>
+    </details>
+  </section>
+  <section id="team-bat"><h2 class="major">Team Batting</h2><div class="tscroll"><table class="sortable">
+    <thead><tr><th>Team</th>{bcols.map(([, h]) => <th class="num">{h}</th>)}</tr></thead>
+    <tbody>{bat.map(([ab, r]) => <tr><td><TeamLink ab={ab} /></td>{bcols.map(([k]) => <td class="num">{r[k]}</td>)}</tr>)}</tbody></table></div></section>
+  <section id="team-pit"><h2 class="major">Team Pitching</h2><div class="tscroll"><table class="sortable">
+    <thead><tr><th>Team</th>{pcols.map(([, h]) => <th class="num" data-asc={h === 'ERA' || h === 'L' || h === 'H' || h === 'R' || h === 'ER' || h === 'BB' ? '1' : undefined}>{h}</th>)}</tr></thead>
+    <tbody>{pit.map(([ab, r]) => <tr><td><TeamLink ab={ab} /></td>{pcols.map(([k]) => <td class="num">{r[k]}</td>)}</tr>)}</tbody></table></div></section>
+  <section id="players-bat"><h2 class="major">All Batters</h2>
+    <p><input type="search" placeholder="Filter by player or team…" data-filter="#tb" style="font:inherit;padding:.4rem .6rem;border:1px solid var(--line);border-radius:6px;width:min(100%,320px)" /> <span class="muted small">Click a column to sort.</span></p>
+    <div class="tscroll"><table class="sortable" id="tb"><thead><tr><th>Player</th><th>Team</th><th class="num">G</th><th class="num">PA</th><th class="num">AB</th><th class="num">R</th><th class="num">H</th><th class="num">2B</th><th class="num">3B</th><th class="num">HR</th><th class="num">RBI</th><th class="num">BB</th><th class="num">SO</th><th class="num">SB</th><th class="num">AVG</th><th class="num">OBP</th><th class="num">SLG</th><th class="num">OPS</th></tr></thead>
+    <tbody>{B.map((p) => <tr><td class="nowrap">{p.name}</td><td>{p.team}</td><td class="num">{p.g}</td><td class="num">{p.pa}</td><td class="num">{p.ab}</td><td class="num">{p.r}</td><td class="num">{p.h}</td><td class="num">{p.d}</td><td class="num">{p.tr}</td><td class="num">{p.hr}</td><td class="num">{p.rbi}</td><td class="num">{p.bb}</td><td class="num">{p.so}</td><td class="num">{p.sb}</td><td class="num">{p.avg}</td><td class="num">{p.obp}</td><td class="num">{p.slg}</td><td class="num">{p.ops}</td></tr>)}</tbody></table></div></section>
+  <section id="players-pit"><h2 class="major">All Pitchers</h2>
+    <p><input type="search" placeholder="Filter by player or team…" data-filter="#tp" style="font:inherit;padding:.4rem .6rem;border:1px solid var(--line);border-radius:6px;width:min(100%,320px)" /></p>
+    <div class="tscroll"><table class="sortable" id="tp"><thead><tr><th>Pitcher</th><th>Team</th><th class="num">W</th><th class="num">L</th><th class="num" data-asc="1">ERA</th><th class="num">G</th><th class="num">GS</th><th class="num">CG</th><th class="num">SHO</th><th class="num">SV</th><th class="num">IP</th><th class="num">H</th><th class="num">R</th><th class="num">ER</th><th class="num">HR</th><th class="num">BB</th><th class="num">SO</th></tr></thead>
+    <tbody>{Pi.map((p) => <tr><td class="nowrap">{p.name}</td><td>{p.team}</td><td class="num">{p.w}</td><td class="num">{p.l}</td><td class="num">{p.era}</td><td class="num">{p.g}</td><td class="num">{p.gs}</td><td class="num">{p.cg}</td><td class="num">{p.sho}</td><td class="num">{p.sv}</td><td class="num" data-v={p.outs / 3}>{p.ip}</td><td class="num">{p.h}</td><td class="num">{p.r}</td><td class="num">{p.er}</td><td class="num">{p.hr}</td><td class="num">{p.bb}</td><td class="num">{p.so}</td></tr>)}</tbody></table></div></section>
+</Base>

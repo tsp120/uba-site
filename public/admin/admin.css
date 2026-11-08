@@ -1,0 +1,14 @@
+:root{--accent:#f56a6a;--ink:#3d4449;--muted:#7f888f;--line:#dfe3e5;--ok:#1f8a4c;--bad:#c23b3b}
+*{box-sizing:border-box}body{margin:0;font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:#f5f6f7}
+header{display:flex;align-items:center;gap:1rem;padding:.6rem 1.5rem;background:#fff;border-bottom:4px solid var(--accent)}header strong{font-family:Georgia,serif;font-size:1.15rem}#who{margin-left:auto}
+main{max-width:1100px;margin:1.5rem auto;padding:0 1rem}section{background:#fff;border:1px solid var(--line);border-radius:12px;padding:1.5rem}
+h1,h2,h3{font-family:Georgia,serif}label{display:block;margin:.6rem 0;font-weight:600}input,textarea,select{font:inherit;width:100%;padding:.45rem .6rem;border:1px solid var(--line);border-radius:6px;font-weight:400}
+.row{display:grid;grid-template-columns:200px 1fr;gap:1rem}.muted{color:var(--muted)}.small{font-size:.85rem}
+.btn{display:inline-block;width:auto;border:2px solid var(--accent);background:#fff;color:var(--accent);border-radius:6px;padding:.45rem 1rem;font-weight:700;cursor:pointer;font-size:.85rem}.btn.fill{background:var(--accent);color:#fff}.btn:disabled{opacity:.5;cursor:wait}
+.tabs{display:flex;gap:.3rem;border-bottom:1px solid var(--line);margin:-.5rem 0 1rem}.tabs button{border:0;background:none;padding:.6rem 1rem;font:inherit;cursor:pointer;border-bottom:3px solid transparent}.tabs button.on{border-color:var(--accent);color:var(--accent);font-weight:700}
+#drop{border:3px dashed var(--line);border-radius:12px;padding:2rem;text-align:center;transition:.15s}#drop.over{border-color:var(--accent);background:#fff5f5}
+table{width:100%;border-collapse:collapse;font-size:.9rem;margin:.6rem 0}th,td{padding:.35rem .45rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}th{font-size:.72rem;text-transform:uppercase;color:var(--muted)}
+td input,td select{padding:.3rem .4rem}.ok{color:var(--ok)}.bad,.err{color:var(--bad)}.skip{color:var(--muted)}
+.tag{display:inline-block;font-size:.7rem;font-weight:700;padding:.05rem .45rem;border-radius:99px;background:#eef0f1;margin-right:.3rem}
+#postList li{margin:.3rem 0}code{background:#eef0f1;padding:0 .3rem;border-radius:4px}
+@media(max-width:700px){.row{grid-template-columns:1fr}}

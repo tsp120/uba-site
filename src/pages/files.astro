@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import { fileManifest } from '../lib/strat.mjs';
+import { fmtDate, ext } from '../lib/fmt.mjs';
+const F = fileManifest();
+const site = (import.meta.env.SITE || '').replace(/\/$/, '');
+const groups = [['current', 'Current Files'], ['history', 'League History'], ['archive', 'Archive']];
+const viewable = (f) => ['xlsx', 'xls', 'docx', 'doc', 'pdf'].includes(ext(f));
+---
+<Base title="Files" active="files">
+  <h1>Files</h1>
+  <div class="viewer" id="viewer" hidden><div class="bar"><strong id="vtitle"></strong><span><a id="vdl" class="btn sm" href="#" download>Download</a> <button class="btn sm" id="vclose">Close</button></span></div><iframe id="vframe" title="File viewer"></iframe></div>
+  {groups.map(([key, label]) => { const list = F.filter((f) => f.section === key).sort((a, b) => (b.season || 0) - (a.season || 0) || a.title.localeCompare(b.title)); return list.length > 0 && (
+    <section><h2 class="major">{label}</h2><div class="tscroll"><table class="filetbl">
+      <thead><tr><th>File</th><th>Updated</th><th></th></tr></thead>
+      <tbody>{list.map((f) => <tr><td><span class={`ficon ${['xlsx','xls','docx','doc','pdf'].includes(ext(f.file)) ? ext(f.file) : 'other'}`}>{ext(f.file).toUpperCase()}</span>{f.title}</td><td class="muted small nowrap">{f.updated ? fmtDate(f.updated) : ''}</td>
+        <td class="right nowrap"><a class="btn sm" href={`/files/${f.file}`} download>Download</a> {viewable(f.file) && <button class="btn sm view" data-file={f.file} data-title={f.title}>View</button>}</td></tr>)}</tbody>
+    </table></div></section>); })}
+  <script is:inline>
+    const v = document.getElementById('viewer'), fr = document.getElementById('vframe');
+    document.addEventListener('click', (e) => {
+      const b = e.target.closest('button.view'); if (!b) return;
+      const url = new URL('/files/' + b.dataset.file, location.origin).href;
+      // PDFs open in the browser's own viewer; Office files use Microsoft's free web viewer (needs a public URL).
+      fr.src = /\.pdf$/i.test(url) ? url : 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(url);
+      document.getElementById('vtitle').textContent = b.dataset.title; document.getElementById('vdl').href = url; v.hidden = false; v.scrollIntoView({ behavior: 'smooth' });
+    });
+    document.getElementById('vclose').onclick = () => { v.hidden = true; fr.src = 'about:blank'; };
+  </script>
+</Base>

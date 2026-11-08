@@ -1,0 +1,5 @@
+---
+import { schedule, lastPlayedDate } from '../../lib/strat.mjs';
+const up = schedule().games.find((g) => !g.played);
+return Astro.redirect(`/schedule/${up && up.date <= new Date().toISOString().slice(0, 10) ? up.date : lastPlayedDate()}/`);
+---

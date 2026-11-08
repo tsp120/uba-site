@@ -1,0 +1,16 @@
+{
+  "name": "uba-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare-data": "node tools/prepare.mjs",
+    "dev": "node tools/prepare.mjs && astro dev",
+    "build": "node tools/prepare.mjs && astro build",
+    "preview": "astro preview",
+    "check-data": "node tools/check.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.18.2",
+    "xlsx": "^0.18.5"
+  }
+}

@@ -1,0 +1,48 @@
+---
+import '../styles.css';
+import { league, standings } from '../lib/strat.mjs';
+import { gbStr } from '../lib/fmt.mjs';
+const { title, active = '' } = Astro.props;
+const L = league();
+const nav = [['/', 'Home', 'home'], ['/newspaper/', 'Daily News', 'newspaper'], ['/schedule/', 'Schedule', 'schedule'], ['/standings/', 'Standings', 'standings'], ['/stats/', 'Stats', 'stats'], ['/teams/', 'Teams', 'teams'], ['/trade/', 'Trade Assistant', 'trade'], ['/files/', 'Files', 'files'], ['/news/', 'League News', 'news']];
+const leaders = standings().flatMap((c) => c.divisions.map((d) => ({ div: `${c.id} ${d.label}`, t: d.rows[0] })));
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title ? `${title} · UBA` : 'Unbelievable Baseball Association'}</title>
+  <meta name="description" content="The Unbelievable Baseball Association — a 30-team Strat-O-Matic league, est. 1968." />
+  <link rel="icon" href="/img/uba.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="wrap">
+  <aside id="side">
+    <a href="/" class="plain"><img class="brand" src="/img/uba.png" alt="UBA" /></a>
+    <nav>
+      <h2>Menu</h2>
+      <ul>{nav.map(([href, label, key]) => <li><a href={href} class={active === key ? 'on' : ''}>{label}</a></li>)}</ul>
+    </nav>
+    <div class="mini">
+      <h2 class="major">Division Leaders</h2>
+      <table class="small">
+        <tbody>{leaders.map(({ div, t }) => <tr><td class="muted nowrap">{div}</td><td><a href={`/teams/${t.abbr.toLowerCase()}/`}>{t.city}</a></td><td class="num">{t.w}-{t.l}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <footer>&copy; Unbelievable Baseball Association. Established {L.established}.<br />Simulated with Strat-O-Matic Baseball.</footer>
+  </aside>
+  <main>
+    <header class="top">
+      <button id="menu-btn" aria-label="Menu">☰ Menu</button>
+      <a href="/" class="logo"><strong>UBA</strong><span> / Unbelievable Baseball Association</span></a>
+      <span class="links"><a href="https://www.facebook.com/search/top?q=the%20uba%20(the%20unbelievable%20baseball%20association)">Facebook</a><a href="/admin/">Commish</a></span>
+    </header>
+    <slot />
+  </main>
+</div>
+<script is:inline src="/site.js"></script>
+</body>
+</html>

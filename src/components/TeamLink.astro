@@ -1,0 +1,6 @@
+---
+import { team } from '../lib/strat.mjs';
+const { ab, mode = 'city', logo = true } = Astro.props;
+const t = team(ab);
+---
+{t ? <a href={`/teams/${ab.toLowerCase()}/`} class="nowrap">{logo && t.logo && <img class="logo-sm" src={t.logo} alt="" loading="lazy" />} {mode === 'abbr' ? ab : mode === 'full' ? `${t.city} ${t.nickname}` : mode === 'nick' ? t.nickname : t.city}</a> : <span>{ab}</span>}
