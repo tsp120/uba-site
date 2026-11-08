@@ -7,31 +7,28 @@ const { date } = Astro.params;
 const all = newspaperDates(); const i = all.indexOf(date);
 const P = newspaper(date);
 const stories = P.stories; const box = P.blocks.filter((b) => b.kind === 'box');
-const top = P.blocks.filter((b) => b.kind === 'recap' || b.kind === 'standings');
-const other = P.blocks.filter((b) => b.kind === 'other');
+const report = P.blocks.filter((b) => ['recap', 'standings', 'other'].includes(b.kind));
 ---
-<Base title={`Daily News · ${fmtDate(date)}`} active="newspaper">
+<Base title={`Daily News, ${fmtDate(date)}`} active="newspaper">
   <div class="datebar">
-    {i > 0 && <a class="btn sm" href={`/newspaper/${all[i - 1]}/`}>← Prev</a>}
     <span class="d">{fmtDate(date, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</span>
-    {i < all.length - 1 && <a class="btn sm" href={`/newspaper/${all[i + 1]}/`}>Next →</a>}
-    <input type="date" id="pick" value={date} min={all[0]} max={all.at(-1)} aria-label="Pick a date" />
+    {i > 0 && <a class="btn sm" href={`/newspaper/${all[i - 1]}/`}>Previous day</a>}
+    {i < all.length - 1 && <a class="btn sm" href={`/newspaper/${all[i + 1]}/`}>Next day</a>}
+    <input type="date" id="pick" value={date} min={all[0]} max={all.at(-1)} aria-label="Go to date" />
     <span class="muted small" id="pickmsg"></span>
   </div>
-  <div class="tabs noprint"><a href="#stories" class="on">Game Stories ({stories.length})</a><a href="#box">Box Scores ({box.length})</a><a href="#league">League Report</a></div>
+  <nav class="tabs noprint"><a href="#stories" class="on">Game stories ({stories.length})</a><a href="#box">Box scores ({box.length})</a><a href="#league">League report</a></nav>
 
-  <section id="stories">
-    <div class="grid g2">{stories.map((s) => (
-      <article class="card story" id={s.id}>
-        <h3>{storyHeadline(s)}</h3>
-        <pre class="mono" style="margin-bottom:.8rem">{s.linescore}</pre>
-        {s.paragraphs.map((p) => <p>{p}</p>)}
-        {P.blocks.some((b) => b.id === `box-${s.id}`) && <a class="small" href={`#box-${s.id}`}>Box score ↓</a>}
-      </article>))}
-    </div>
+  <section id="stories" class="storygrid">{stories.map((s) => (
+    <article class="story" id={s.id}>
+      <h3>{storyHeadline(s)}</h3>
+      <pre class="mono">{s.linescore}</pre>
+      {s.paragraphs.map((p) => <p>{p}</p>)}
+      {P.blocks.some((b) => b.id === `box-${s.id}`) && <p class="small" style="font-family:var(--sans)"><a href={`#box-${s.id}`}>Box score</a></p>}
+    </article>))}
   </section>
-  <section id="box"><h2 class="major">Box Scores</h2><div class="paper">{box.map((b) => <pre id={b.id} set:html={b.html} />)}</div></section>
-  <section id="league"><h2 class="major">League Report</h2><div class="paper">{[...top, ...other].map((b) => <pre set:html={b.html} />)}</div></section>
+  <section id="box"><h2 class="major">Box scores</h2><div class="paper">{box.map((b) => <pre id={b.id} set:html={b.html} />)}</div></section>
+  <section id="league"><h2 class="major">League report</h2><div class="paper">{report.map((b) => <pre set:html={b.html} />)}</div></section>
   <script is:inline>
     const pick = document.getElementById('pick');
     pick.addEventListener('change', async () => {

@@ -8,7 +8,7 @@ const ab = Astro.params.abbr.toUpperCase(); const t = team(ab); const R = roster
 <Base title={`${t.city} roster`} active="teams">
   <TeamHeader ab={ab} tab="Roster" />
   {!R ? <p>No roster spreadsheet has been uploaded for this team yet.</p> : <>
-    <p class="noprint"><a class="btn" href={`/rosters/${ab}.xlsx`} download>Download spreadsheet</a> <span class="muted small">{R.season && `${R.season} roster`} · from the commissioner's cap sheet</span></p>
+    <p class="noprint"><a class="btn" href={`/rosters/${ab}.xlsx`} download>Download spreadsheet</a> <span class="muted small">{R.season ? `${R.season} roster from the commissioner's cap sheet` : "From the commissioner's cap sheet"}</span></p>
     {R.totals.length > 0 && <p>{R.totals.map((x) => <span class="pill" style="margin-right:.4rem">{x.label}: {x.salary}</span>)}</p>}
     {R.sections.map((s) => <section>
       <h2 class="major">{s.name}</h2>

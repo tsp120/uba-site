@@ -23,7 +23,7 @@ const teams = teamList();
       const R = rosters[ab]; const T = teams[ab];
       if (!R) { out.innerHTML = '<p class="muted">No roster uploaded.</p>'; return; }
       sel[ab] ||= new Set();
-      out.innerHTML = `<div class="teamcard" style="margin-bottom:.6rem">${T.logo ? `<img src="${T.logo}" alt="" style="width:44px;height:44px">` : ''}<div><div class="city">${esc(T.city)} ${esc(T.nickname)}</div><div class="small muted">${T.w}-${T.l} · ${R.totals.map((t) => `${esc(t.label)} ${esc(t.salary)}`).join(' · ')}</div></div></div>` +
+      out.innerHTML = `<div class="teamcard" style="margin-bottom:.6rem">${T.logo ? `<img src="${T.logo}" alt="" style="width:44px;height:44px">` : ''}<div><div class="city">${esc(T.city)} ${esc(T.nickname)}</div><div class="small muted">${T.w}-${T.l}<br>${R.totals.map((t) => `${esc(t.label)} ${esc(t.salary)}`).join(', ')}</div></div></div>` +
         R.sections.map((s) => `<h4 style="margin:1rem 0 .3rem">${esc(s.name)}</h4>` + s.groups.map((g) => `<table><thead><tr><th></th><th>${esc(g.name)}</th><th class="num">$</th><th>FA</th></tr></thead><tbody>` +
           g.players.map((p) => `<tr data-ab="${ab}" data-n="${esc(p.n)}" class="${sel[ab].has(p.n) ? 'sel' : ''}"><td class="pick"><input type="checkbox" ${sel[ab].has(p.n) ? 'checked' : ''} aria-label="select ${esc(p.n)}"></td><td><strong>${esc(p.n)}</strong> <span class="muted">${esc(p.p)}</span><div class="small muted">${esc(p.k)}</div></td><td class="num">${esc(p.s)}</td><td>${esc(p.fa)}</td></tr>`).join('') + '</tbody></table>').join('')).join('');
     }

@@ -20,7 +20,7 @@ const cells = (ym) => { const [y, m] = ym.split('-').map(Number); const first = 
   <section id="list"><div class="tscroll"><table>
     <thead><tr><th>Date</th><th></th><th>Opponent</th><th class="center">Result</th><th>Decision</th></tr></thead>
     <tbody>{S.map((g) => <tr><td class="nowrap">{g.played ? <a href={`${paperUrl(g.date)}#${g.away.toLowerCase()}-${g.home.toLowerCase()}`}>{shortDate(g.date)}</a> : shortDate(g.date)}</td><td class="muted">{g.at}</td><td><TeamLink ab={g.opp} /></td>
-      <td class="center nowrap">{g.result ? <><span class={g.result}>{g.result}</span> {g.score}{g.inn !== 9 ? ` (${g.inn})` : ''}</> : ''}</td><td class="small muted">{g.played ? `W ${g.win} · L ${g.loss}` : ''}</td></tr>)}</tbody>
+      <td class="center nowrap">{g.result ? <><span class={g.result}>{g.result}</span> {g.score}{g.inn !== 9 ? ` (${g.inn})` : ''}</> : ''}</td><td class="small muted">{g.played ? `W ${g.win}, L ${g.loss}` : ''}</td></tr>)}</tbody>
   </table></div></section>
   <section id="calendar">{months.map((ym) => <><h3>{monthName(ym)}</h3><div class="cal" style="margin-bottom:1.5rem">
     {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => <div class="dow">{d}</div>)}

@@ -13,7 +13,7 @@ const B = P.batters.filter((p) => +p.pa > 0); const Pi = P.pitchers.filter((p) =
 ---
 <Base title="Stats" active="stats">
   <h1>{league().season} Statistics</h1>
-  <div class="tabs"><a href="#leaders" class="on">Leaders</a><a href="#team-bat">Team Batting</a><a href="#team-pit">Team Pitching</a><a href="#players-bat">All Batters</a><a href="#players-pit">All Pitchers</a></div>
+  <nav class="tabs"><a href="#leaders" class="on">Leaders</a><a href="#team-bat">Team Batting</a><a href="#team-pit">Team Pitching</a><a href="#players-bat">All Batters</a><a href="#players-pit">All Pitchers</a></nav>
   <section id="leaders">
     <div class="grid g4">{top.map((l) => (
       <div class="card"><h4>{l.title}</h4><table class="small"><tbody>{l.rows.slice(0, 5).map((r, i) => <tr><td class="muted">{i + 1}</td><td>{r.name}</td><td><TeamLink ab={r.team} mode="abbr" logo={false} /></td><td class="num"><strong>{r.value}</strong></td></tr>)}</tbody></table></div>))}

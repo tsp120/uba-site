@@ -1,53 +1,56 @@
 ---
 import Base from '../layouts/Base.astro';
-import Score from '../components/Score.astro';
-import { schedule, lastPlayedDate, newspaper, newspaperDates, storyHeadline, posts, standings, team } from '../lib/strat.mjs';
-import { fmtDate, paperUrl, gbStr } from '../lib/fmt.mjs';
-const last = lastPlayedDate();
-const scores = schedule().games.filter((g) => g.date === last);
-const upcoming = schedule().games.filter((g) => !g.played);
-const nextDate = upcoming[0]?.date;
-// Feed = latest newspapers' game stories plus commish posts, newest first.
+import TeamLink from '../components/TeamLink.astro';
+import { newspaper, newspaperDates, storyHeadline, posts, standings, teamList, team } from '../lib/strat.mjs';
+import { fmtDate, paperUrl, pct, gbStr } from '../lib/fmt.mjs';
 const dates = newspaperDates().slice(-3).reverse();
 const stories = dates.flatMap((d) => newspaper(d).stories.map((s) => ({ ...s, href: `${paperUrl(d)}#${s.id}`, title: storyHeadline(s) })));
 const featured = stories[0];
-const recent = posts().slice(0, 3);
-const resources = [['/files/', '▤', 'Files', 'Free agent bid book, rookie list, rule book and the league archive.'], ['/trade/', '⇄', 'Trade Assistant', 'Line up to three rosters side by side, salaries included, and build a deal.'],
-  ['/teams/', '⚾', 'Teams', 'Every club: owners, managers, rosters, stats and schedules.'], ['/schedule/', '▦', 'Schedule', "Today's games, scores and the full season calendar."],
-  ['/standings/', '#', 'Standings', 'Division races and the wild card picture.'], ['/stats/', '%', 'Statistics', 'League leaders plus sortable team and player stats.']];
+const rest = stories.slice(1, 13);
+const recent = posts().slice(0, 2);
+const C = standings();
+// Linescore lines from the story ("Jacks.......... 4 3 0  0 0 3 ... - 11 14 0") give R/H/E for the hero.
+const rhe = featured ? featured.linescore.split('\n').map((l) => l.match(/-\s+(\d+)\s+(\d+)\s+(\d+)\s*$/)).filter(Boolean).slice(0, 2) : [];
 ---
 <Base title="" active="home">
   {featured && (
   <section class="hero">
-    <div class="story">
-      <div class="kicker">{fmtDate(featured.date)} · Game of the day</div>
+    <article class="story">
+      <p class="when">Game of the day, {fmtDate(featured.date, { weekday: 'long', month: 'long', day: 'numeric' })}</p>
       <h1>{featured.title}</h1>
-      <p class="big">{featured.lead}</p>
-      {featured.paragraphs[1] && <p>{featured.paragraphs[1]}</p>}
-      <a class="btn fill" href={featured.href}>Read story</a>
-    </div>
-    <div>
-      <h2 class="major">Scores · {fmtDate(last, { month: 'short', day: 'numeric' })}</h2>
-      <div class="scores" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">{scores.slice(0, 8).map((g) => <Score g={g} />)}</div>
-      <p class="small"><a href={`/schedule/${last}/`}>All {scores.length} games →</a>{nextDate && <> · <a href={`/schedule/${nextDate}/`}>Next game day →</a></>}</p>
-    </div>
+      {rhe.length === 2 && <div class="linescore" aria-label="Line score">
+        <span class="t"></span><span class="h">R</span><span class="h">H</span><span class="h">E</span>
+        {[[featured.away, rhe[0]], [featured.home, rhe[1]]].map(([ab, m]) => <><span class="t">{team(ab) ? `${team(ab).city} ${team(ab).nickname}` : ab}</span><span>{m[1]}</span><span>{m[2]}</span><span>{m[3]}</span></>)}
+      </div>}
+      {featured.paragraphs.slice(0, 2).map((p) => <p>{p}</p>)}
+      <a class="btn fill" href={featured.href}>Read the full story</a>
+    </article>
+    <aside class="side-standings">
+      <h2>Standings</h2>
+      {C.map((c) => <>
+        <div class="conf">{c.name}</div>
+        <table><thead><tr><th>Team</th><th class="num">W</th><th class="num">L</th><th class="num">GB</th></tr></thead>
+          <tbody>{c.divisions.map((d) => <><tr class="dv"><td colspan="4">{d.label}</td></tr>{d.rows.slice(0, 2).map((r, i) => <tr class={i === 0 ? 'lead-row' : ''}><td><TeamLink ab={r.abbr} /></td><td class="num">{r.w}</td><td class="num">{r.l}</td><td class="num">{gbStr(r.gb)}</td></tr>)}</>)}</tbody></table>
+      </>)}
+      <p class="small" style="margin-top:.8rem"><a href="/standings/">Full standings and wild card</a></p>
+    </aside>
   </section>)}
 
   {recent.length > 0 && (
   <section>
-    <h2 class="major">From the Commissioner</h2>
-    <div class="posts">{recent.map((p) => <article class="post"><div class="meta">{p.date && fmtDate(p.date)}</div><h3><a href={`/news/${p.slug}/`}>{p.title}</a></h3><p>{p.excerpt}…</p></article>)}</div>
+    <h2 class="major">From the commissioner</h2>
+    {recent.map((p) => <div class="notice" style="margin-bottom:1rem"><h3 style="margin-bottom:.3rem"><a class="plain" href={`/news/${p.slug}/`}>{p.title}</a></h3><p class="small muted" style="margin:0 0 .4rem">{p.date && fmtDate(p.date)}</p><p style="margin:0">{p.excerpt}… <a href={`/news/${p.slug}/`}>Keep reading</a></p></div>)}
   </section>)}
 
   <section>
-    <h2 class="major">Resources</h2>
-    <div class="features">{resources.map(([href, ic, h, p]) => <a class="feature plain" href={href}><div class="ic"><span>{ic}</span></div><div><h3>{h}</h3><p>{p}</p></div></a>)}</div>
+    <h2 class="major">Around the league<small>Game stories from the last three days</small></h2>
+    <div class="posts">{rest.map((s) => (
+      <article class="post"><div class="meta">{fmtDate(s.date, { month: 'short', day: 'numeric' })}</div><h3><a href={s.href}>{s.title}</a></h3><p>{s.lead}</p></article>))}</div>
+    <p style="margin-top:1.2rem"><a class="btn" href={paperUrl(dates[0])}>Open today's newspaper</a></p>
   </section>
 
   <section>
-    <h2 class="major">Recent Game Stories</h2>
-    <div class="posts">{stories.filter((s) => s !== featured).slice(0, 12).map((s) => (
-      <article class="post"><div class="meta">{fmtDate(s.date)}</div><h3><a href={s.href}>{s.title}</a></h3><p>{s.lead}</p></article>))}</div>
-    <p><a class="btn" href={paperUrl(dates[0])}>Today's newspaper</a></p>
+    <h2 class="major">The 30 clubs</h2>
+    <div class="teamrail">{teamList().map((t) => <a href={`/teams/${t.abbr.toLowerCase()}/`}>{t.logo && <img src={t.logo} alt="" loading="lazy" />}<span>{t.city}</span></a>)}</div>
   </section>
 </Base>

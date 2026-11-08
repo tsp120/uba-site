@@ -17,11 +17,11 @@ const pc = [['w', 'W', 'W'], ['l', 'L', 'L'], ['era', 'ERA', 'ERA'], ['g', 'G', 
   <section><h2 class="major">Batting</h2><div class="tscroll"><table>
     <thead><tr><th>Player</th>{bc.map(([, h]) => <th class="num">{h}</th>)}</tr></thead>
     <tbody>{B.map((p) => { const r = rb(p); return <><tr><td class="nowrap"><strong>{p.name}</strong> <span class="muted small">{p.hand}</span></td>{bc.map(([k]) => <td class="num">{p[k]}</td>)}</tr>
-      {r && <tr class="real"><td class="real">MLB · {r.Team}</td>{bc.map(([, , c]) => <td class="num real">{r[c] ?? ''}</td>)}</tr>}</>; })}</tbody>
+      {r && <tr class="real"><td class="real">Real MLB, {r.Team}</td>{bc.map(([, , c]) => <td class="num real">{r[c] ?? ''}</td>)}</tr>}</>; })}</tbody>
   </table></div></section>
   <section><h2 class="major">Pitching</h2><div class="tscroll"><table>
     <thead><tr><th>Pitcher</th>{pc.map(([, h]) => <th class="num">{h}</th>)}</tr></thead>
     <tbody>{Pi.map((p) => { const r = rp(p); return <><tr><td class="nowrap"><strong>{p.name}</strong> <span class="muted small">{p.hand}</span></td>{pc.map(([k]) => <td class="num">{p[k]}</td>)}</tr>
-      {r && <tr class="real"><td class="real">MLB · {r.Team}</td>{pc.map(([, , c]) => <td class="num real">{r[c] ?? ''}</td>)}</tr>}</>; })}</tbody>
+      {r && <tr class="real"><td class="real">Real MLB, {r.Team}</td>{pc.map(([, , c]) => <td class="num real">{r[c] ?? ''}</td>)}</tr>}</>; })}</tbody>
   </table></div></section>
 </Base>

@@ -9,15 +9,15 @@ const S = schedule(); const i = S.dates.indexOf(date);
 const games = S.games.filter((g) => g.date === date);
 const hasPaper = newspaperDates().includes(date);
 ---
-<Base title={`Schedule · ${fmtDate(date)}`} active="schedule">
+<Base title={`Schedule, ${fmtDate(date)}`} active="schedule">
   <div class="datebar">
-    {i > 0 && <a class="btn sm" href={`/schedule/${S.dates[i - 1]}/`}>← Prev</a>}
+    {i > 0 && <a class="btn sm" href={`/schedule/${S.dates[i - 1]}/`}>Previous day</a>}
     <span class="d">{fmtDate(date, { weekday: 'long', month: 'long', day: 'numeric' })}</span>
-    {i < S.dates.length - 1 && <a class="btn sm" href={`/schedule/${S.dates[i + 1]}/`}>Next →</a>}
+    {i < S.dates.length - 1 && <a class="btn sm" href={`/schedule/${S.dates[i + 1]}/`}>Next day</a>}
     <input type="date" id="pick" value={date} min={S.dates[0]} max={S.dates.at(-1)} aria-label="Pick a date" />
     {hasPaper && <a class="btn sm" href={paperUrl(date)}>Newspaper</a>}
   </div>
-  <p class="muted small">{games.length} game{games.length === 1 ? '' : 's'}{games.some((g) => !g.played) ? ' · records shown for upcoming games' : ''}</p>
+  <p class="muted small">{games.length} game{games.length === 1 ? '' : 's'}{games.some((g) => !g.played) ? ', with current records' : ''}</p>
   <div class="scores">{games.map((g) => <Score g={g} />)}</div>
   <script is:inline define:vars={{ dates: S.dates }}>
     document.getElementById('pick').addEventListener('change', (e) => { const d = e.target.value; const hit = dates.find((x) => x >= d) || dates.at(-1); location.href = `/schedule/${hit}/`; });

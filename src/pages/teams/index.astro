@@ -9,7 +9,7 @@ import { nth } from '../../lib/fmt.mjs';
     <a class="card teamcard" href={`/teams/${t.abbr.toLowerCase()}/`}>
       {t.logo && <img src={t.logo} alt="" loading="lazy" />}
       <div><div class="city">{t.city}</div><div class="nick">{t.nickname}</div>
-        <div class="small muted">{t.w}-{t.l} · {nth(placeOf(t.abbr).place)} {t.conf} {t.divLabel}</div>
+        <div class="small muted">{t.w}-{t.l}, {nth(placeOf(t.abbr).place)} in {t.conf} {t.divLabel}</div>
         <div class="small">Owner: {t.owner || '—'}<br />Manager: {t.manager || '—'}</div></div>
     </a>))}</div>
 </Base>
