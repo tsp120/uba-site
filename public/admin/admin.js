@@ -123,5 +123,13 @@ $('#saveLeague').onclick = async () => {
   try { const r = await api('/league', { method: 'POST', json: { teams: league.teams, wildcards: +$('#wc').value } }); $('#lMsg').innerHTML = `<span class="ok">Saved.</span>${live(r.commit)}`; } catch (err) { $('#lMsg').innerHTML = `<span class="bad">${esc(err.message)}</span>`; }
 };
 
-function loadAll() { $('#nDate').valueAsDate = new Date(); loadNews().catch(() => {}); loadFiles().catch(() => {}); loadLeague().catch(() => {}); }
+function banner(msg) { let b = $('#banner'); if (!b) { b = document.createElement('div'); b.id = 'banner'; $('#app').prepend(b); } b.className = msg ? 'banner' : ''; b.textContent = msg || ''; }
+const fail = (where) => (e) => banner(`Couldn't load ${where}: ${e.message}`);
+async function loadAll() {
+  $('#nDate').valueAsDate = new Date();
+  const me = await api('/me').catch(() => ({}));
+  banner(me.problem ? `GitHub connection problem: ${me.problem}` : '');
+  if (me.problem) return;
+  loadNews().catch(fail('news')); loadFiles().catch(fail('the Files page list')); loadLeague().catch(fail('teams'));
+}
 api('/me').then(() => { show(true); loadAll(); }).catch(() => show(false));

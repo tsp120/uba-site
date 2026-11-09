@@ -2,7 +2,7 @@
 // and every POST must carry the X-UBA header, which a cross-site form cannot send (CSRF protection).
 import { passwordOk, sessionCookie, clearCookie, isAuthed } from '../_lib/auth.js';
 import { route, MAX_FILE, MAX_TOTAL, safeName } from '../_lib/routes.js';
-import { commit, readJson, listDir, readText } from '../_lib/github.js';
+import { commit, readJson, listDir, readText, checkRepo } from '../_lib/github.js';
 
 const json = (data, status = 200, headers = {}) => new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...headers } });
 const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'post';
@@ -27,7 +27,7 @@ export async function onRequest({ request, env, params }) {
     if (path === '/logout') return json({ ok: true }, 200, { 'Set-Cookie': clearCookie() });
     if (!(await isAuthed(env, request))) return json({ error: 'Please log in' }, 401);
 
-    if (path === '/me') return json({ ok: true, repo: env.GITHUB_REPO });
+    if (path === '/me') return json({ ok: true, repo: env.GITHUB_REPO, problem: await checkRepo(env).catch((e) => `Could not reach GitHub: ${e.message}`) });
 
     // Ask where files would go before uploading them (the drop zone shows this as a checklist).
     if (path === '/plan' && method === 'POST') {

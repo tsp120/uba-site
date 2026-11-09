@@ -10,6 +10,8 @@ globalThis.fetch = async (url, init = {}) => {
   assert.match(init.headers.Authorization, /^Bearer test-token$/);
   if (p.startsWith('/contents/')) { const path = decodeURIComponent(p.slice(10)); if (repo.files.has(path)) return ok({ content: Buffer.from(repo.files.get(path)).toString('base64') });
     const dir = [...repo.files.keys()].filter((k) => k.startsWith(path + '/')); return dir.length ? ok(dir.map((k) => ({ name: k.split('/').pop(), path: k, size: 1 }))) : new Response('nf', { status: 404 }); }
+  if (p === '' ) return ok({ permissions: { push: true } });
+  if (p === '/branches/main') return ok({});
   if (p === '/git/ref/heads/main') return ok({ object: { sha: 'c0' } });
   if (p === '/git/commits/c0' || p.startsWith('/git/commits/c')) return ok({ tree: { sha: 't0' } });
   if (p === '/git/blobs') { const id = 'b' + repo.files.size + Math.random(); repo.blobs = { ...(repo.blobs || {}), [id]: Buffer.from(body.content, 'base64') }; return ok({ sha: id }); }
@@ -37,7 +39,7 @@ assert.equal((await call('/login', { method: 'POST', json: { password: 'correct 
 const forged = 'uba_admin=' + (Date.now() + 1e7) + '.deadbeef'; cookie = forged; assert.equal((await call('/me')).status, 401, 'forged cookie rejected'); cookie = '';
 const li = await call('/login', { method: 'POST', json: { password: 'correct horse' } });
 assert.equal(li.status, 200); assert.match(li.setCookie, /HttpOnly; Secure; SameSite=Strict/); cookie = li.setCookie.split(';')[0];
-assert.equal((await call('/me')).status, 200);
+const me = await call('/me'); assert.equal(me.status, 200); assert.equal(me.json.problem, null, 'healthy connection reports no problem');
 
 // Plan routing
 const { plan } = (await call('/plan', { method: 'POST', json: { names: ['leaguedata.js', 'bNYK.js', 'teamnyk.js', '20260928DAY.htm', '20260928BAT.htm', 'results.htm', 'cap12.xlsx', 'cap99.xlsx', 'realbatters.csv', '2027_Rule_Book.pdf', 'stats.css', 'shell.php', 'evil.php.xlsx', 'index.html'] } })).json;

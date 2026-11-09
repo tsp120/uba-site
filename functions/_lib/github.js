@@ -13,6 +13,21 @@ export function toBase64(bytes) {
 }
 const fromBase64 = (b) => Uint8Array.from(atob(b.replace(/\n/g, '')), (c) => c.charCodeAt(0));
 
+// Plain-English check of the GitHub connection, shown on the admin page after login.
+export async function checkRepo(env) {
+  const r = await fetch(`https://api.github.com/repos/${env.GITHUB_REPO}`, { headers: { Authorization: `Bearer ${env.GITHUB_TOKEN}`, Accept: 'application/vnd.github+json', 'User-Agent': 'uba-site-admin' } });
+  if (r.status === 401) return 'GitHub rejected GITHUB_TOKEN. It may be mistyped (check for a stray space), expired, or deleted. Make a new token and update the secret.';
+  if (r.status === 404) return `GitHub can't find "${env.GITHUB_REPO}" with this token. GITHUB_REPO must be exactly owner/name (e.g. tsp120/uba-site, no https:// or .git), and the token must have that repository selected under "Repository access".`;
+  if (!r.ok) return `GitHub answered ${r.status} when checking the repository.`;
+  const repo = await r.json();
+  if (repo.permissions && !repo.permissions.push) return 'The token can see the repository but cannot write to it. Edit the token and set Repository permissions > Contents to "Read and write".';
+  const b = await fetch(`https://api.github.com/repos/${env.GITHUB_REPO}/branches/${env.GITHUB_BRANCH || 'main'}`, { headers: { Authorization: `Bearer ${env.GITHUB_TOKEN}`, Accept: 'application/vnd.github+json', 'User-Agent': 'uba-site-admin' } });
+  if (b.status === 404) return `The repository has no branch named "${env.GITHUB_BRANCH || 'main'}". Set GITHUB_BRANCH to the branch Cloudflare builds from (usually main).`;
+  const lg = await fetch(`https://api.github.com/repos/${env.GITHUB_REPO}/contents/data/league.json?ref=${env.GITHUB_BRANCH || 'main'}`, { headers: { Authorization: `Bearer ${env.GITHUB_TOKEN}`, Accept: 'application/vnd.github+json', 'User-Agent': 'uba-site-admin' } });
+  if (lg.status === 404) return 'Connected to GitHub, but data/league.json is not in the repository. Make sure the whole project (including the data folder) was pushed.';
+  return null;
+}
+
 export async function readText(env, path) {
   try { const j = await api(env, `/contents/${path}?ref=${branch(env)}`); return new TextDecoder().decode(fromBase64(j.content)); }
   catch (e) { if (/→ 404/.test(e.message)) return null; throw e; }
