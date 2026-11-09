@@ -294,17 +294,25 @@ function parseCsv(text) {
   const head = rows.shift()?.map((h) => h.trim()) || [];
   return rows.filter((r) => r.some((x) => x.trim())).map((r) => Object.fromEntries(head.map((h, i) => [h, t(r[i])])));
 }
+// Column names differ between FanGraphs and Baseball-Reference exports; map them to one set.
+const ALIAS = { Player: 'Name', Tm: 'Team', BA: 'AVG', K: 'SO', IBB: 'IBB', HBP: 'HBP' };
 export const realStats = memo(() => {
+  const meta = exists('realstats/meta.json') ? JSON.parse(read('realstats/meta.json')) : {};
   const load = (f) => {
-    if (!exists(f)) return { updated: null, rows: new Map() };
+    if (!exists(`realstats/${f}`)) return { updated: null, rows: new Map() };
     const rows = new Map();
-    for (const r of parseCsv(read(f))) {
-      const name = r.Name || r.Player || r.name; if (!name) continue;
-      const k = normName(name); if (!rows.has(k)) rows.set(k, { ...r, Name: name, Team: r.Team || r.Tm || '' });
+    for (const raw of parseCsv(read(`realstats/${f}`))) {
+      const r = {}; for (const [k, v] of Object.entries(raw)) r[ALIAS[k] || k] = v;
+      const name = (r.Name || '').replace(/[*#+]+$/, '').trim(); if (!name || name === 'Name' || /league average/i.test(name)) continue;
+      const k = normName(name);
+      // Baseball-Reference lists traded players once per team plus a total row (2TM/3TM/TOT): keep the total.
+      const isTotal = /^(\dTM|TOT|- - -)$/.test(r.Team || '');
+      if (!rows.has(k) || isTotal) rows.set(k, { ...r, Name: name, Team: isTotal ? 'Multiple teams' : r.Team || '' });
     }
-    return { updated: fs.statSync(path.join(DATA, f)).mtime, rows };
+    // Upload date is recorded by the commish's upload page; files carried over from the old site have none.
+    return { updated: meta[f] || null, rows };
   };
-  return { batters: load('realstats/realbatters.csv'), pitchers: load('realstats/realpitchers.csv') };
+  return { batters: load('realbatters.csv'), pitchers: load('realpitchers.csv') };
 });
 
 // ---------- Files page + commish news posts ----------

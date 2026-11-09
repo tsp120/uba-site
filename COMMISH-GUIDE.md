@@ -16,7 +16,7 @@ The site updates itself in about two minutes: scores, standings, stats, leaders,
 | To… | Do this |
 |---|---|
 | Update a team's roster | Drop its cap spreadsheet (e.g. `cap12.xlsx`) on **Publish files** |
-| Update next year's MLB stats | Drop `realbatters.csv` / `realpitchers.csv` on **Publish files** |
+| Update the real MLB stats | Export the current season's batting and pitching tables from FanGraphs or Baseball-Reference as CSV, name them `realbatters.csv` and `realpitchers.csv`, and drop them on **Publish files**. Each team's Stats page shows the date you uploaded them |
 | Post the bid book, rookie list, rule book… | Drop the file on **Publish files**, give it a title, Publish. It appears at the top of the Files page |
 | Rename or remove a document | **Files page** tab |
 | Post an announcement | **News** tab (blank line = new paragraph) |

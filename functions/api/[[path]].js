@@ -61,6 +61,9 @@ export async function onRequest({ request, env, params }) {
         if (r.kind === 'download') newDownloads.push({ file: r.dest.split('/').pop(), title: clean(titles[f.name] || f.name.replace(/\.[^.]+$/, '').replace(/_/g, ' '), 120) });
       }
       if (errors.length && !out.length) return json({ error: errors.join('\n') }, 400);
+      // Remember when the real MLB stats were uploaded, so team pages can say how current they are.
+      const statsUp = out.filter((o) => o.path.startsWith('data/realstats/')).map((o) => o.path.split('/').pop());
+      if (statsUp.length) { const meta = await readJson(env, 'data/realstats/meta.json', {}); for (const f of statsUp) meta[f] = today(); out.push({ path: 'data/realstats/meta.json', text: JSON.stringify(meta, null, 2) }); }
       if (newDownloads.length) {
         const manifest = await readJson(env, 'data/files.json', []);
         for (const d of newDownloads) {

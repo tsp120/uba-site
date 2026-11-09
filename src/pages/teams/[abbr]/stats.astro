@@ -6,14 +6,14 @@ import { fmtDate } from '../../../lib/fmt.mjs';
 export function getStaticPaths() { return teamList().map((t) => ({ params: { abbr: t.abbr.toLowerCase() } })); }
 const ab = Astro.params.abbr.toUpperCase(); const t = team(ab); const P = teamPlayers(ab); const RS = realStats();
 const rb = (p) => RS.batters.rows.get(normName(p.name)); const rp = (p) => RS.pitchers.rows.get(normName(p.name));
-const upd = (d) => (d ? fmtDate(d.toISOString().slice(0, 10), { month: 'short', day: 'numeric', year: 'numeric' }) : null);
+const upd = (d) => (d ? fmtDate(d, { month: 'long', day: 'numeric', year: 'numeric' }) : null);
 const B = [...P.batters].sort((a, b) => +b.pa - +a.pa); const Pi = [...P.pitchers].sort((a, b) => b.outs - a.outs);
 const bc = [['g', 'G', 'G'], ['ab', 'AB', 'AB'], ['r', 'R', 'R'], ['h', 'H', 'H'], ['d', '2B', '2B'], ['tr', '3B', '3B'], ['hr', 'HR', 'HR'], ['rbi', 'RBI', 'RBI'], ['bb', 'BB', 'BB'], ['so', 'SO', 'SO'], ['sb', 'SB', 'SB'], ['avg', 'AVG', 'AVG']];
 const pc = [['w', 'W', 'W'], ['l', 'L', 'L'], ['era', 'ERA', 'ERA'], ['g', 'G', 'G'], ['gs', 'GS', 'GS'], ['sv', 'SV', 'SV'], ['ip', 'IP', 'IP'], ['h', 'H', 'H'], ['er', 'ER', 'ER'], ['hr', 'HR', 'HR'], ['bb', 'BB', 'BB'], ['so', 'SO', 'SO']];
 ---
 <Base title={`${t.city} stats`} active="teams">
   <TeamHeader ab={ab} tab="Stats" />
-  <p class="muted small">UBA {league().season} stats from Strat-O-Matic. The grey line under each player is his real MLB line{upd(RS.batters.updated) && ` (MLB stats file updated ${upd(RS.batters.updated)})`}, so you can see how he's doing for next year's card.</p>
+  <p class="muted small">UBA {league().season} stats from Strat-O-Matic. The grey line under each player is his real MLB line, to show how his card may change next year. {upd(RS.batters.updated) ? `Real stats uploaded ${upd(RS.batters.updated)}.` : "The real stats file was carried over from the old site and its date isn't known, so it may be from an earlier season."}</p>
   <section><h2 class="major">Batting</h2><div class="tscroll"><table>
     <thead><tr><th>Player</th>{bc.map(([, h]) => <th class="num">{h}</th>)}</tr></thead>
     <tbody>{B.map((p) => { const r = rb(p); return <><tr><td class="nowrap"><strong>{p.name}</strong> <span class="muted small">{p.hand}</span></td>{bc.map(([k]) => <td class="num">{p[k]}</td>)}</tr>
