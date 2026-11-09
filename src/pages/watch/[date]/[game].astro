@@ -15,11 +15,12 @@ const teams = { away: { abbr: g.away, city: A.city, nick: A.nickname, logo: A.lo
       <div class="gc-team away"><img src={A.logo} alt="" /><div><b>{A.city}</b><span>{A.nickname} ({g.awayRec})</span></div><output class="gc-runs" data-k="away">0</output></div>
       <div class="gc-mid">
         <div class="gc-inning" aria-live="polite">Pregame</div>
-        <svg class="gc-diamond" viewBox="0 0 120 120" aria-hidden="true">
-          <rect x="52" y="10" width="16" height="16" transform="rotate(45 60 18)" class="b b2" />
-          <rect x="94" y="52" width="16" height="16" transform="rotate(45 102 60)" class="b b1" />
-          <rect x="10" y="52" width="16" height="16" transform="rotate(45 18 60)" class="b b3" />
-          <path d="M60 104 l7 -7 v-6 h-14 v6 z" class="plate" />
+        <svg class="gc-diamond" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M50 78 L76 50 L50 24 L24 50 Z" class="path" />
+          <rect x="38" y="12" width="24" height="24" rx="2" transform="rotate(45 50 24)" class="b b2" />
+          <rect x="64" y="38" width="24" height="24" rx="2" transform="rotate(45 76 50)" class="b b1" />
+          <rect x="12" y="38" width="24" height="24" rx="2" transform="rotate(45 24 50)" class="b b3" />
+          <path d="M50 92 l8 -8 v-7 h-16 v7 z" class="plate" />
         </svg>
         <div class="gc-outs" aria-label="Outs"><i></i><i></i><i></i></div>
       </div>

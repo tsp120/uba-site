@@ -150,7 +150,7 @@ dl.kv{display:grid;grid-template-columns:auto 1fr;gap:.15rem 1rem;margin:.6rem 0
 .gc-runs{font-family:var(--slab);font-size:3.4rem;line-height:1;min-width:2.2ch;text-align:center}
 .gc-mid{display:flex;flex-direction:column;align-items:center;gap:.4rem}
 .gc-inning{font-weight:500;color:var(--gold);white-space:nowrap}
-.gc-diamond{width:96px;height:96px}.gc-diamond .b{fill:transparent;stroke:#fff;stroke-width:2;transition:fill .25s}.gc-diamond .b.on{fill:var(--gold);stroke:var(--gold)}.gc-diamond .plate{fill:#fff}
+.gc-diamond{width:130px;height:130px}.gc-diamond .path{fill:none;stroke:rgba(255,255,255,.25);stroke-width:2}.gc-diamond .b{fill:var(--navy);stroke:#fff;stroke-width:2.5;transition:fill .25s}.gc-diamond .b.on{fill:var(--gold);stroke:var(--gold)}.gc-diamond .plate{fill:#fff}
 .gc-outs{display:flex;gap:.35rem}.gc-outs i{width:12px;height:12px;border-radius:50%;border:2px solid #fff}.gc-outs i.on{background:var(--orange);border-color:var(--orange)}
 .gc-line{margin-bottom:1rem}.gc-line td.tot{font-weight:700;background:#F2F3F8}
 .gc-controls{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:0 0 1.6rem}
@@ -169,4 +169,4 @@ dl.kv{display:grid;grid-template-columns:auto 1fr;gap:.15rem 1rem;margin:.6rem 0
 .gc-now .gc-ab b{font-size:1.15rem}
 .gc-end{background:var(--navy);color:#fff;border-radius:16px;padding:1.1rem 1.2rem}.gc-end h3{color:#fff;margin-bottom:.3rem}.gc-end p{color:#D9DCEA}
 .gc-note{margin-top:1.5rem;max-width:80ch}
-@media (max-width:900px){.gc-cols{grid-template-columns:1fr}.gc-bug{grid-template-columns:1fr;gap:.8rem;padding:1rem 1.1rem 1.4rem}.gc-mid{grid-row:1;flex-direction:row;justify-content:center;gap:1.2rem}.gc-diamond{width:70px;height:70px}.gc-team,.gc-team.home{justify-content:flex-start;text-align:left}.gc-team img{order:0;width:44px;height:44px}.gc-team div{order:1}.gc-team .gc-runs{order:2;margin-left:auto;font-size:2.4rem}.gc-team b{font-size:1.1rem}}
+@media (max-width:900px){.gc-cols{grid-template-columns:1fr}.gc-bug{grid-template-columns:1fr;gap:.8rem;padding:1rem 1.1rem 1.4rem}.gc-mid{grid-row:1;flex-direction:row;justify-content:center;gap:1.2rem}.gc-diamond{width:96px;height:96px}.gc-team,.gc-team.home{justify-content:flex-start;text-align:left}.gc-team img{order:0;width:44px;height:44px}.gc-team div{order:1}.gc-team .gc-runs{order:2;margin-left:auto;font-size:2.4rem}.gc-team b{font-size:1.1rem}}
