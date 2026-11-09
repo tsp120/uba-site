@@ -1,0 +1,8 @@
+---
+import Base from '../../../layouts/Base.astro';
+import WatchList from '../../../components/WatchList.astro';
+import { watchDays } from '../../../lib/watch.mjs';
+export function getStaticPaths() { return watchDays().map((d) => ({ params: { date: d.date }, props: { day: d } })); }
+const { day } = Astro.props;
+---
+<Base title="Watch" active="watch" spoilerFree><WatchList day={day} days={watchDays()} /></Base>

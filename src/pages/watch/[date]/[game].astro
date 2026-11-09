@@ -1,0 +1,48 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { watchDays } from '../../../lib/watch.mjs';
+import { team } from '../../../lib/strat.mjs';
+import { fmtDate, paperUrl } from '../../../lib/fmt.mjs';
+export function getStaticPaths() { return watchDays().flatMap((d) => d.games.map((g) => ({ params: { date: d.date, game: g.id }, props: { g, date: d.date } }))); }
+const { g, date } = Astro.props;
+const A = team(g.away), H = team(g.home);
+const teams = { away: { abbr: g.away, city: A.city, nick: A.nickname, logo: A.logo, rec: g.awayRec }, home: { abbr: g.home, city: H.city, nick: H.nickname, logo: H.logo, rec: g.homeRec } };
+---
+<Base title={`${A.city} at ${H.city}`} active="watch" spoilerFree>
+  <p class="small"><a href={`/watch/${date}/`}>All games on {fmtDate(date, { month: 'long', day: 'numeric' })}</a></p>
+  <div id="gc" data-src={`/data/gamecast/${date}/${g.id}.json`} data-story={`${paperUrl(date)}#${g.id}`} data-teams={JSON.stringify(teams)}>
+    <section class="gc-bug">
+      <div class="gc-team away"><img src={A.logo} alt="" /><div><b>{A.city}</b><span>{A.nickname} ({g.awayRec})</span></div><output class="gc-runs" data-k="away">0</output></div>
+      <div class="gc-mid">
+        <div class="gc-inning" aria-live="polite">Pregame</div>
+        <svg class="gc-diamond" viewBox="0 0 120 120" aria-hidden="true">
+          <rect x="52" y="10" width="16" height="16" transform="rotate(45 60 18)" class="b b2" />
+          <rect x="94" y="52" width="16" height="16" transform="rotate(45 102 60)" class="b b1" />
+          <rect x="10" y="52" width="16" height="16" transform="rotate(45 18 60)" class="b b3" />
+          <path d="M60 104 l7 -7 v-6 h-14 v6 z" class="plate" />
+        </svg>
+        <div class="gc-outs" aria-label="Outs"><i></i><i></i><i></i></div>
+      </div>
+      <div class="gc-team home"><output class="gc-runs" data-k="home">0</output><div><b>{H.city}</b><span>{H.nickname} ({g.homeRec})</span></div><img src={H.logo} alt="" /></div>
+    </section>
+    <div class="gc-line tscroll"><table><thead></thead><tbody></tbody></table></div>
+    <div class="gc-controls">
+      <button class="btn fill" data-act="play">Play ball</button>
+      <button class="btn" data-act="step">Next play</button>
+      <button class="btn" data-act="inning">End of inning</button>
+      <label class="gc-speed">Speed <select data-act="speed"><option value="4200">Slow</option><option value="2400" selected>Normal</option><option value="900">Fast</option></select></label>
+      <button class="btn" data-act="final">Show final</button>
+    </div>
+    <div class="gc-cols">
+      <section class="gc-feed"><h2 class="major">Play by play</h2><ol></ol><p class="muted gc-wait">Press Play ball to start. Plays appear here as they happen.</p></section>
+      <aside class="gc-now">
+        <h2 class="major">At the plate</h2>
+        <div class="gc-ab"><span class="muted small">Batting</span><b data-k="batter">-</b><span class="small" data-k="bline"></span></div>
+        <div class="gc-ab"><span class="muted small">Pitching</span><b data-k="pitcher">-</b><span class="small" data-k="pline"></span></div>
+        <div class="gc-end" hidden><h3>Final</h3><p data-k="finaltxt"></p><a class="btn fill" data-k="storylink" href="#">Read the game story</a></div>
+      </aside>
+    </div>
+    <p class="muted small gc-note">This replay is rebuilt from the Strat-O-Matic box score. Every inning's runs and each player's line match the real game; the exact order of plays in between is our best reconstruction.</p>
+  </div>
+  <script is:inline src="/gamecast.js"></script>
+</Base>

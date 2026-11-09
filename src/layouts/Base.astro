@@ -5,11 +5,12 @@ import '@fontsource/rubik/500.css';
 import '@fontsource/rubik/700.css';
 import Logo from '../components/Logo.astro';
 import '../styles.css';
-import { league, standings, schedule, lastPlayedDate, team } from '../lib/strat.mjs';
+import { league, standings, schedule, lastPlayedDate, team, newspaperDates, currentScheduleDate } from '../lib/strat.mjs';
 import { fmtDate, paperUrl } from '../lib/fmt.mjs';
-const { title, active = '' } = Astro.props;
+const { title, active = '', spoilerFree = false } = Astro.props;
 const L = league();
-const nav = [['/', 'Home', 'home'], ['/newspaper/', 'Daily News', 'newspaper'], ['/schedule/', 'Schedule', 'schedule'], ['/standings/', 'Standings', 'standings'], ['/stats/', 'Stats', 'stats'], ['/teams/', 'Teams', 'teams'], ['/trade/', 'Trades', 'trade'], ['/files/', 'Files', 'files'], ['/news/', 'News', 'news']];
+// Link straight to the dated pages so nobody ever sees a redirect.
+const nav = [['/', 'Home', 'home'], ['/watch/', 'Watch', 'watch'], [`/newspaper/${newspaperDates().at(-1)}/`, 'Daily News', 'newspaper'], [`/schedule/${currentScheduleDate()}/`, 'Schedule', 'schedule'], ['/standings/', 'Standings', 'standings'], ['/stats/', 'Stats', 'stats'], ['/teams/', 'Teams', 'teams'], ['/trade/', 'Trades', 'trade'], ['/files/', 'Files', 'files'], ['/news/', 'News', 'news']];
 const leaders = standings().flatMap((c) => c.divisions.map((d) => ({ div: `${c.name.replace(' Conference', '')} ${d.label}`, t: d.rows[0] })));
 ---
 <!doctype html>
@@ -34,10 +35,10 @@ const leaders = standings().flatMap((c) => c.divisions.map((d) => ({ div: `${c.n
   <footer class="foot">
     <div class="foot-in">
       <Logo size={88} />
-      <div>
+      {spoilerFree ? <div><h4>No spoilers here</h4><p>Standings and scores are hidden on Watch pages so you can follow games without knowing how they ended.</p></div> : <div>
         <h4>Division leaders</h4>
         <table><tbody>{leaders.map(({ div, t }) => <tr><td>{div}</td><td><a href={`/teams/${t.abbr.toLowerCase()}/`}>{t.city} {t.nickname}</a></td><td class="num">{t.w}-{t.l}</td></tr>)}</tbody></table>
-      </div>
+      </div>}
       <div>
         <h4>The UBA</h4>
         <p>Thirty managers, one Strat-O-Matic league, every season since {L.established}. The commissioner runs the league; this site shows what he publishes.</p>

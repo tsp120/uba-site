@@ -168,6 +168,8 @@ export const schedule = memo(() => {
   games.sort((a, b) => a.date.localeCompare(b.date));
   return { year, games, dates: [...new Set(games.map((g) => g.date))] };
 });
+// The day the Schedule link opens on: the next day with games if the season is underway, else the last game day.
+export const currentScheduleDate = () => { const up = schedule().games.find((g) => !g.played); const today = new Date().toISOString().slice(0, 10); return up && up.date <= today ? up.date : lastPlayedDate(); };
 export const lastPlayedDate = () => { const g = schedule().games.filter((x) => x.played); return g.length ? g[g.length - 1].date : schedule().dates[0]; };
 export const teamSchedule = (ab) => schedule().games.filter((g) => g.away === ab || g.home === ab).map((g) => {
   const home = g.home === ab; const us = home ? g.hs : g.as; const them = home ? g.as : g.hs;

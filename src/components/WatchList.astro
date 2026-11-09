@@ -1,0 +1,19 @@
+---
+import { team } from '../lib/strat.mjs';
+import { fmtDate } from '../lib/fmt.mjs';
+const { day, days } = Astro.props;
+---
+<div class="lede-head">
+  <h1>Watch</h1>
+  <nav class="tabs" aria-label="Game days">{days.map((d) => <a href={`/watch/${d.date}/`} class={d.date === day.date ? 'on' : ''}>{fmtDate(d.date, { weekday: 'short', month: 'short', day: 'numeric' })}</a>)}</nav>
+</div>
+<p class="muted watch-intro">Pick a game and follow it batter by batter, without seeing the result first. Scores stay hidden on this page.</p>
+<div class="watchgrid">
+  {day.games.map((g) => { const A = team(g.away), H = team(g.home); return (
+    <a class="watchcard" href={`/watch/${day.date}/${g.id}/`}>
+      <div class="wteam">{A?.logo && <img src={A.logo} alt="" loading="lazy" />}<div><b>{A?.city}</b><span>{A?.nickname} ({g.awayRec})</span></div></div>
+      <div class="wat">at</div>
+      <div class="wteam">{H?.logo && <img src={H.logo} alt="" loading="lazy" />}<div><b>{H?.city}</b><span>{H?.nickname} ({g.homeRec})</span></div></div>
+      <span class="btn fill sm">Watch</span>
+    </a>); })}
+</div>

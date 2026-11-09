@@ -1,0 +1,9 @@
+---
+import Base from '../../layouts/Base.astro';
+import WatchList from '../../components/WatchList.astro';
+import { watchDays } from '../../lib/watch.mjs';
+const days = watchDays();
+---
+<Base title="Watch" active="watch" spoilerFree>
+  {days.length ? <WatchList day={days[0]} days={days} /> : <p>No games to watch yet.</p>}
+</Base>

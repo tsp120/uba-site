@@ -1,5 +1,6 @@
 ---
-import { newspaperDates } from '../../lib/strat.mjs';
-const latest = newspaperDates().at(-1);
-return Astro.redirect(`/newspaper/${latest}/`);
+// Fallback only: Cloudflare answers /newspaper/ with an instant server redirect (see tools/prepare.mjs), and the menu links to the dated page directly.
+import { newspaperDates, currentScheduleDate } from '../../lib/strat.mjs';
+const to = 'newspaper' === 'newspaper' ? `/newspaper/${newspaperDates().at(-1)}/` : `/schedule/${currentScheduleDate()}/`;
 ---
+<!doctype html><html lang="en"><head><meta charset="utf-8" /><meta http-equiv="refresh" content={`0;url=${to}`} /><link rel="canonical" href={to} /><title>UBA</title><script is:inline define:vars={{ to }}>location.replace(to);</script></head><body></body></html>

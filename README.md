@@ -77,3 +77,11 @@ npx wrangler pages dev    # runs the admin page + API locally (needs a .dev.vars
 * Cloudflare's free plan gives each API request a small CPU budget and 50 outbound calls. The upload page sends big drops in batches to stay inside that, and text files (Web Builder, newspapers) cost nothing extra. If the commish ever sees "exceeded CPU" errors on very large uploads, the $5/month Workers Paid plan removes the problem.
 * The "View" button for Excel/Word files uses Microsoft's free Office web viewer, exactly as the old site did. It needs the site to be publicly reachable.
 * Older newspapers (before the current season) still show every story and box score, but their team names aren't linked, because franchises have moved over the years (e.g. the Oklahoma City Otters).
+
+## Watch mode
+
+`/watch/` lists the most recent game days without scores. Each game opens a replay that plays out batter by batter.
+
+Strat's files have no play-by-play, so `src/lib/gamecast.mjs` rebuilds one from the box score. It searches for an order of plate appearances that reproduces every inning's runs, each batter's line (hits, doubles, homers, walks, strikeouts, GIDPs, sacrifices, R and RBI), each pitcher's line, the written story's "in the 6th inning" moments and the box's web gems. About 95% of games match every inning exactly. For the rest, a final pass corrects the scoring so the replay still ends on the real final, and the page notes that it is approximate.
+
+How many days are rebuilt is set by the `WATCH_DAYS` environment variable (default 7). Each day adds roughly 10–15 seconds to the Cloudflare build. To check the reconstruction for a day, run `node tools/gc-test.mjs 2026-09-27`.
