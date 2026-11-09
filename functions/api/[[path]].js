@@ -17,6 +17,9 @@ export async function onRequest({ request, env, params }) {
   try {
     if (method === 'POST' && request.headers.get('X-UBA') !== '1') return json({ error: 'Bad request' }, 400);
     if (path === '/login' && method === 'POST') {
+      // Tell the person setting up the site exactly what's missing, instead of a misleading "Wrong password".
+      const missing = ['ADMIN_PASSWORD', 'SESSION_SECRET', 'GITHUB_TOKEN', 'GITHUB_REPO'].filter((k) => !env[k]);
+      if (missing.length) return json({ error: `The upload page isn't set up yet. In Cloudflare, add ${missing.join(', ')} under Settings > Variables and Secrets (Production), then retry the deployment.` }, 503);
       const { password } = await request.json().catch(() => ({}));
       if (!(await passwordOk(env, password))) { await new Promise((r) => setTimeout(r, 1200)); return json({ error: 'Wrong password' }, 401); }
       return json({ ok: true }, 200, { 'Set-Cookie': await sessionCookie(env) });
