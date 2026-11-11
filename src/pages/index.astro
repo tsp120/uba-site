@@ -98,23 +98,21 @@ const decision = featured?.decision.replace(/Win:/, 'W: ').replace(/Loss:/, ', L
   </section>
   <script is:inline>
     (() => {
+      // News band: moves to the next story every 8 seconds until someone presses Pause.
+      // It keeps going while the mouse is over it; it only waits while the browser tab is in the background.
       const band = document.querySelector('.newsband'); if (!band) return;
       const slides = [...band.querySelectorAll('.nb-slide')], dots = [...band.querySelectorAll('.nb-dot')]; if (slides.length < 2) return;
       const pauseBtn = band.querySelector('[data-nb="pause"]');
-      const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let cur = 0, timer = null, stopped = still, held = false;
+      let cur = 0, timer = null, stopped = false;
       const go = (n) => { cur = (n + slides.length) % slides.length; slides.forEach((s, k) => { s.hidden = k !== cur; }); dots.forEach((d, k) => d.setAttribute('aria-current', String(k === cur))); };
-      const arm = () => { clearTimeout(timer); if (!stopped && !held) timer = setTimeout(() => { go(cur + 1); arm(); }, 8000); };
+      const arm = () => { clearTimeout(timer); if (!stopped && !document.hidden) timer = setTimeout(() => { go(cur + 1); arm(); }, 8000); };
       const setStopped = (v) => { stopped = v; pauseBtn.textContent = v ? 'Play' : 'Pause'; pauseBtn.setAttribute('aria-label', v ? 'Rotate stories' : 'Stop rotating stories'); arm(); };
       band.querySelector('[data-nb="prev"]').onclick = () => { go(cur - 1); arm(); };
       band.querySelector('[data-nb="next"]').onclick = () => { go(cur + 1); arm(); };
       dots.forEach((d) => (d.onclick = () => { go(+d.dataset.nbGo); arm(); }));
       pauseBtn.onclick = () => setStopped(!stopped);
-      // Hold still while the reader is pointing at or tabbing through the band.
-      band.addEventListener('mouseenter', () => { held = true; arm(); }); band.addEventListener('mouseleave', () => { held = false; arm(); });
-      band.addEventListener('focusin', () => { held = true; arm(); }); band.addEventListener('focusout', (e) => { if (!band.contains(e.relatedTarget)) { held = false; arm(); } });
-      document.addEventListener('visibilitychange', () => { held = document.hidden; arm(); });
-      setStopped(stopped);
+      document.addEventListener('visibilitychange', arm);
+      setStopped(false);
     })();
   </script>
 </Base>

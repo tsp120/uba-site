@@ -181,7 +181,7 @@ tr.nomlb td{background:#FAFAFD}
 .nb-slide[hidden]{display:none}
 @media (prefers-reduced-motion:no-preference){.nb-slide{animation:nbin .6s ease-out}@keyframes nbin{from{opacity:0}}}
 .nb-text .when{color:var(--gold);font-weight:500;margin-bottom:.6rem}
-.nb-text h1{font-size:clamp(2.2rem,4.6vw,3.6rem);line-height:1.02;margin-bottom:1rem}.nb-text h1 a{color:#fff}
+.nb-text h1{font-size:clamp(1.6rem,2.6vw,2.2rem);line-height:1.12;margin-bottom:.8rem;max-width:22ch}.nb-text h1 a{color:#fff}
 .nb-text p{color:#D9DCEA;font-size:1.12rem;line-height:1.55;max-width:58ch}
 .nb-photo{display:block;border-radius:18px;overflow:hidden;aspect-ratio:3/2;background:var(--navy-2);box-shadow:0 0 0 6px rgba(255,255,255,.06)}
 .nb-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
@@ -197,7 +197,7 @@ tr.nomlb td{background:#FAFAFD}
 /* home: game of the day, now below the news band */
 .gotd{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:3rem;align-items:center;margin-bottom:2.6rem}
 .gotd .when{color:var(--orange);font-weight:500;margin-bottom:.4rem}
-.gotd h2{font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:1.05}
+.gotd h2{font-size:clamp(1.45rem,2.3vw,1.9rem);line-height:1.12}
 .gotd p{max-width:62ch}
 .gotd .linecard{box-shadow:0 1px 0 var(--rule),0 8px 24px rgba(28,35,64,.08)}
 .gotd .linecard .dec{margin:.7rem 0 0;font-size:.9rem;color:var(--slate)}
@@ -267,7 +267,7 @@ tr.nomlb td{background:#FAFAFD}
   .gc-line .full{display:none}.gc-line .ab{display:inline}
   .gc-line th,.gc-line td{padding:.4rem .35rem}
   /* news band */
-  .newsband{padding:1.6rem 0 1.2rem}.nb-text h1{font-size:2rem}.nb-text p{font-size:1rem}
+  .newsband{padding:1.6rem 0 1.2rem}.nb-text h1{font-size:1.5rem}.nb-text p{font-size:1rem}
   .nb-ctrl{flex-wrap:wrap}
   .nb-photo:has(.nb-nophoto){display:none}
   .gc-controls{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}.gc-controls .btn{text-align:center}.gc-speed{grid-column:1/-1;order:5}
