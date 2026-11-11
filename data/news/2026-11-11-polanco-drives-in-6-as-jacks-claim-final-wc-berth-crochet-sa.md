@@ -1,16 +1,24 @@
 ---
-title: "Polanco Drives in 6 as Jacks Claim Final WC Berth"
+title: "Otters Clinch Tie for Central Crown"
 date: 2026-11-11
 image: https://img.mlbstatic.com/mlb-images/image/upload/ar_16:9,g_auto,q_auto:good,w_1024,c_fill,f_jpg/mlb/yymbhtfufccnjmfwrpna
 ---
-Louisville (UBAN) - Jorge Polanco went deep and had 6 RBI at Sluggers Park where the Jacksonville Jacks beat the lifeless Louisville Sluggers by the score of 11 to 8 and secured the final Wild Card berth in the East.
+September 25, 2026
 
-Polanco really lit it up for Jacksonville. The Louisville fans let him have it for what he did to their boys. He doubled which scored a run in the 1st inning, doubled with all three runners coming home in the 2nd inning and popped a two-run clout over the fence in the 6th inning. Jacksonville out-hit Louisville for the game, 14 hits to 11.
+Chicago (UBAN) - Ramon Laureano had 2 base hits and 2 RBI and Taj Bradley went 7 solid innings as the Chicago Otters defeated the Mexico City Aguilas Doradas 8 to 2 at Otter Park.
 
-The win was credited to Mason Miller(4-6) who went 1 inning allowing no runs. Jake Irvin(7-16) took the loss. 'I felt great out there today,' Polanco said, 'Maybe I should make a regular habit of getting to bed on time!'
+Chicago scored 4 runs in the 3rd inning when they had 3 base hits. That early run support was enough for Bradley(14-11) and Chicago. Chicago had 11 hits for the game and Mexico City had 4.
 
-Salt Lake City (UBAN) - Casey Schmitt hit 2 doubles and Garrett Crochet retired 11 batters on strikeouts as the Salt Lake City Saints defeated the Washington Federals by the score of 6 to 3 at Saints Field.
+Adrian Houser(6-12) took the loss. He got hammered, allowing 9 hits and 3 walks in 4 innings.
 
-Crochet(15-8) was tremendous on the mound for Salt Lake City. He allowed only 3 hits and 1 walk in 8 innings. The game was a scoreless duel until the 6th inning.
+Miami (UBAN) - It was an exciting evening game in Marlins Park where the Jacksonville Jacks finally out-lasted the Miami Marlins by a score of 14 to 12 in a affair.
 
-The loss was charged to Will Warren(10-9). He allowed 1 run and 4 hits in 6 innings. When asked about his strikeout total for the game, Crochet offered, 'The fan's really got into it. It is fun to see them tally up the strikeout totals up there in the stands. Fortunately, I kept them busy this afternoon - of course, it would be all for naught without the 'W'.'
+Corbin Carroll was a thorn in the side of the hometown fans as he enjoyed a fine day at their team's expense. He stroked a single plating two runs in the 2nd inning, cleared the fences for a two-run home run in the 4th inning and stroked a base-hit in the 8th inning. Miami threatened in the 9th but Jacksonville was able to put down the rally.
+
+Wandy Peralta(3-2) picked up the victory, allowing no runs in 2/3 of an inning. A.J. Smith-Shawver (1-2) was given the loss. He pitched 1 and 1/3 innings giving up 3 hits and 3 walks.
+
+Oakland (UBAN) - Cristian Javier had an impressive outing at Black Panther Headquarters as the Los Angeles Angels beat the Oakland Black Panther Party 2 to 0.
+
+Javier(5-2) dominated Oakland hitters. He gave up just 2 hits and 1 walk in 7 innings lowering his ERA to 3.86. Los Angeles and Oakland each finished the afternoon with 3 hits.
+
+Andres Munoz recorded his 40th save. Simeon Woods-Richard(8-12) took the loss. He pitched 7 and 1/3 innings allowing only 1 hit and 1 walk.
