@@ -64,8 +64,8 @@ export const standings = memo(() => {
     });
     const leaders = new Set(divisions.map((d) => d.rows[0].abbr));
     const wc = Object.values(L.teams).filter((x) => x.conf === c.id && !leaders.has(x.abbr)).sort((a, b) => b.pct - a.pct || b.w - a.w);
-    // Games back of the final wild-card spot; negative = ahead of it. Spots per conference: league.json "wildcards" (default 2, as on the old site).
-    const spots = leagueFile().wildcards || 2;
+    // Games back of the final wild-card spot; negative = ahead of it. Spots per conference: league.json "wildcards" (default 3).
+    const spots = leagueFile().wildcards || 3;
     const cut = wc[spots - 1] || wc[wc.length - 1];
     return { ...c, spots, divisions, wildcard: wc.map((r, i) => ({ ...r, place: i + 1, gb: gb(cut.w, cut.l, r.w, r.l) })) };
   });
@@ -323,6 +323,6 @@ export const posts = memo(() => {
     const src = read(`news/${f}`);
     const m = src.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
     const meta = {}; if (m) for (const l of m[1].split('\n')) { const i = l.indexOf(':'); if (i > 0) meta[l.slice(0, i).trim()] = l.slice(i + 1).trim().replace(/^"(.*)"$/, '$1'); }
-    return { slug: f.replace(/\.md$/, ''), title: meta.title || f, date: meta.date || '', image: meta.image || null, body: (m ? m[2] : src).trim(), excerpt: (m ? m[2] : src).replace(/[#*_>\x60\[\]]|\(https?:[^)]*\)/g, '').replace(/\s+/g, ' ').trim().slice(0, 220) };
+    return { slug: f.replace(/\.md$/, ''), title: meta.title || f, date: meta.date || '', image: /^https:\/\/[^\s"]+$|^\/media\/news\/[\w.-]+$/.test(meta.image || '') ? meta.image : null, body: (m ? m[2] : src).trim(), excerpt: (m ? m[2] : src).replace(/[#*_>\x60\[\]]|\(https?:[^)]*\)/g, '').replace(/\s+/g, ' ').trim().slice(0, 240).replace(/\s+\S*$/, '') };
   }).sort((a, b) => b.date.localeCompare(a.date) || b.slug.localeCompare(a.slug));
 });

@@ -78,6 +78,25 @@ assert.equal((await call('/news')).json.posts.length, 1);
 assert.equal((await call('/news', { method: 'POST', json: { remove: '../league.json' } })).status, 400, 'path traversal refused');
 assert.equal((await call('/news', { method: 'POST', json: { remove: n.json.file } })).status, 200); assert.ok(!repo.files.has('data/news/' + n.json.file));
 
+// News with an uploaded photo: photo committed beside the post; replacing it removes the old one; removing the post removes both
+{
+  const fd = new FormData(); fd.append('title', 'Opening Day photo'); fd.append('date', '2026-11-09'); fd.append('body', 'Look at those uniforms.');
+  fd.append('photo', new Blob([new Uint8Array([0xff, 0xd8, 0xff, 1, 2, 3])], { type: 'image/jpeg' }), 'photo.jpg');
+  const r = await call('/news', { method: 'POST', form: fd }); assert.equal(r.status, 200, JSON.stringify(r.json));
+  const img1 = r.json.image; assert.match(img1, /^\/media\/news\/2026-11-09-opening-day-photo-[a-z0-9]+\.jpg$/);
+  assert.ok(repo.files.has('data/newsimg/' + img1.split('/').pop()), 'photo committed');
+  assert.match(repo.files.get('data/news/' + r.json.file), new RegExp('image: ' + img1.replace(/\./g, '\\.')));
+  await new Promise((ok) => setTimeout(ok, 5));
+  const fd2 = new FormData(); fd2.append('file', r.json.file); fd2.append('title', 'Opening Day photo'); fd2.append('date', '2026-11-09'); fd2.append('body', 'New photo.'); fd2.append('image', img1);
+  fd2.append('photo', new Blob([new Uint8Array([0x89, 0x50, 0x4e, 0x47])], { type: 'image/png' }), 'photo.png');
+  const r2 = await call('/news', { method: 'POST', form: fd2 }); assert.equal(r2.status, 200); assert.notEqual(r2.json.image, img1);
+  assert.ok(!repo.files.has('data/newsimg/' + img1.split('/').pop()), 'old photo removed'); assert.ok(repo.files.has('data/newsimg/' + r2.json.image.split('/').pop()));
+  const bad = new FormData(); bad.append('title', 'x'); bad.append('body', 'y'); bad.append('photo', new Blob(['<svg/>'], { type: 'image/svg+xml' }), 'x.svg');
+  assert.equal((await call('/news', { method: 'POST', form: bad })).status, 400, 'non-photo refused');
+  await call('/news', { method: 'POST', json: { remove: r2.json.file } });
+  assert.ok(!repo.files.has('data/newsimg/' + r2.json.image.split('/').pop()), 'photo removed with its post');
+}
+
 // Files page edit + removal deletes file
 const fe = await call('/files', { method: 'POST', json: { files: [] } }); assert.equal(fe.status, 200); assert.ok(!repo.files.has('data/files/2027_Rule_Book.pdf'));
 

@@ -8,20 +8,52 @@ const ab = Astro.params.abbr.toUpperCase(); const t = team(ab); const P = teamPl
 const rb = (p) => RS.batters.rows.get(normName(p.name)); const rp = (p) => RS.pitchers.rows.get(normName(p.name));
 const upd = (d) => (d ? fmtDate(d, { month: 'long', day: 'numeric', year: 'numeric' }) : null);
 const B = [...P.batters].sort((a, b) => +b.pa - +a.pa); const Pi = [...P.pitchers].sort((a, b) => b.outs - a.outs);
+// [UBA key, header, real-stats column]
 const bc = [['g', 'G', 'G'], ['ab', 'AB', 'AB'], ['r', 'R', 'R'], ['h', 'H', 'H'], ['d', '2B', '2B'], ['tr', '3B', '3B'], ['hr', 'HR', 'HR'], ['rbi', 'RBI', 'RBI'], ['bb', 'BB', 'BB'], ['so', 'SO', 'SO'], ['sb', 'SB', 'SB'], ['avg', 'AVG', 'AVG']];
 const pc = [['w', 'W', 'W'], ['l', 'L', 'L'], ['era', 'ERA', 'ERA'], ['g', 'G', 'G'], ['gs', 'GS', 'GS'], ['sv', 'SV', 'SV'], ['ip', 'IP', 'IP'], ['h', 'H', 'H'], ['er', 'ER', 'ER'], ['hr', 'HR', 'HR'], ['bb', 'BB', 'BB'], ['so', 'SO', 'SO']];
+const when = upd(RS.batters.updated);
+const hasReal = RS.batters.rows.size > 0 || RS.pitchers.rows.size > 0;
 ---
 <Base title={`${t.city} stats`} active="teams">
   <TeamHeader ab={ab} tab="Stats" />
-  <p class="muted small">UBA {league().season} stats from Strat-O-Matic. The grey line under each player is his real MLB line, to show how his card may change next year. {upd(RS.batters.updated) ? `Real stats uploaded ${upd(RS.batters.updated)}.` : "The real stats file was carried over from the old site and its date isn't known, so it may be from an earlier season."}</p>
-  <section><h2 class="major">Batting</h2><div class="tscroll"><table>
-    <thead><tr><th>Player</th>{bc.map(([, h]) => <th class="num">{h}</th>)}</tr></thead>
-    <tbody>{B.map((p) => { const r = rb(p); return <><tr><td class="nowrap"><strong>{p.name}</strong> <span class="muted small">{p.hand}</span></td>{bc.map(([k]) => <td class="num">{p[k]}</td>)}</tr>
-      {r && <tr class="real"><td class="real">Real MLB, {r.Team}</td>{bc.map(([, , c]) => <td class="num real">{r[c] ?? ''}</td>)}</tr>}</>; })}</tbody>
-  </table></div></section>
-  <section><h2 class="major">Pitching</h2><div class="tscroll"><table>
-    <thead><tr><th>Pitcher</th>{pc.map(([, h]) => <th class="num">{h}</th>)}</tr></thead>
-    <tbody>{Pi.map((p) => { const r = rp(p); return <><tr><td class="nowrap"><strong>{p.name}</strong> <span class="muted small">{p.hand}</span></td>{pc.map(([k]) => <td class="num">{p[k]}</td>)}</tr>
-      {r && <tr class="real"><td class="real">Real MLB, {r.Team}</td>{pc.map(([, , c]) => <td class="num real">{r[c] ?? ''}</td>)}</tr>}</>; })}</tbody>
-  </table></div></section>
+  {hasReal && (
+  <div class="seg" role="group" aria-label="Which stats to show">
+    <button type="button" data-view="uba" aria-pressed="true">UBA {league().season}</button>
+    <button type="button" data-view="mlb" aria-pressed="false">Real MLB</button>
+  </div>)}
+
+  <div data-pane="uba">
+    <p class="muted small">UBA {league().season} stats from Strat-O-Matic.</p>
+    <section><h2 class="major">Batting</h2><div class="tscroll"><table>
+      <thead><tr><th>Player</th>{bc.map(([, h]) => <th class="num">{h}</th>)}</tr></thead>
+      <tbody>{B.map((p) => <tr><td class="nowrap"><strong>{p.name}</strong> <span class="muted small">{p.hand}</span></td>{bc.map(([k]) => <td class="num">{p[k]}</td>)}</tr>)}</tbody>
+    </table></div></section>
+    <section><h2 class="major">Pitching</h2><div class="tscroll"><table>
+      <thead><tr><th>Pitcher</th>{pc.map(([, h]) => <th class="num">{h}</th>)}</tr></thead>
+      <tbody>{Pi.map((p) => <tr><td class="nowrap"><strong>{p.name}</strong> <span class="muted small">{p.hand}</span></td>{pc.map(([k]) => <td class="num">{p[k]}</td>)}</tr>)}</tbody>
+    </table></div></section>
+  </div>
+
+  {hasReal && (
+  <div data-pane="mlb" hidden>
+    <p class="muted small">The same players' real MLB lines, which is what their next Strat cards are based on. {when ? `Real stats uploaded ${when}.` : "The real stats file was carried over from the old site and its date isn't known, so it may be from an earlier season."}</p>
+    <section><h2 class="major">Batting</h2><div class="tscroll"><table>
+      <thead><tr><th>Player</th><th>MLB team</th>{bc.map(([, h]) => <th class="num">{h}</th>)}</tr></thead>
+      <tbody>{B.map((p) => { const r = rb(p); return <tr class={r ? '' : 'nomlb'}><td class="nowrap"><strong>{p.name}</strong></td>{r ? <><td>{r.Team}</td>{bc.map(([, , c]) => <td class="num">{r[c] ?? ''}</td>)}</> : <td colspan={bc.length + 1} class="muted small">No MLB line in the uploaded file</td>}</tr>; })}</tbody>
+    </table></div></section>
+    <section><h2 class="major">Pitching</h2><div class="tscroll"><table>
+      <thead><tr><th>Pitcher</th><th>MLB team</th>{pc.map(([, h]) => <th class="num">{h}</th>)}</tr></thead>
+      <tbody>{Pi.map((p) => { const r = rp(p); return <tr class={r ? '' : 'nomlb'}><td class="nowrap"><strong>{p.name}</strong></td>{r ? <><td>{r.Team}</td>{pc.map(([, , c]) => <td class="num">{r[c] ?? ''}</td>)}</> : <td colspan={pc.length + 1} class="muted small">No MLB line in the uploaded file</td>}</tr>; })}</tbody>
+    </table></div></section>
+  </div>)}
+
+  <script is:inline>
+    (() => {
+      const btns = document.querySelectorAll('.seg [data-view]'); if (!btns.length) return;
+      const show = (v) => { btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === v))); document.querySelectorAll('[data-pane]').forEach((p) => (p.hidden = p.dataset.pane !== v)); };
+      btns.forEach((b) => (b.onclick = () => { show(b.dataset.view); try { sessionStorage.setItem('uba-stats-view', b.dataset.view); } catch {} }));
+      let v = null; try { v = sessionStorage.getItem('uba-stats-view'); } catch {}
+      if (v === 'mlb') show('mlb');
+    })();
+  </script>
 </Base>

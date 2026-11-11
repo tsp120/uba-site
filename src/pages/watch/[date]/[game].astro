@@ -37,10 +37,15 @@ const teams = { away: { abbr: g.away, city: A.city, nick: A.nickname, logo: A.lo
     <div class="gc-cols">
       <section class="gc-feed"><h2 class="major">Play by play</h2><ol></ol><p class="muted gc-wait">Press Play ball to start. Plays appear here as they happen.</p></section>
       <aside class="gc-now">
-        <h2 class="major">At the plate</h2>
-        <div class="gc-ab"><span class="muted small">Batting</span><b data-k="batter">-</b><span class="small" data-k="bline"></span></div>
-        <div class="gc-ab"><span class="muted small">Pitching</span><b data-k="pitcher">-</b><span class="small" data-k="pline"></span></div>
+        <div class="gc-up" hidden>
+          <span class="lbl" data-k="uplabel">At bat</span>
+          <b data-k="batter">-</b><span class="small" data-k="bline"></span>
+          <span class="lbl vs">Pitching</span>
+          <b data-k="pitcher">-</b><span class="small" data-k="pline"></span>
+        </div>
         <div class="gc-end" hidden><h3>Final</h3><p data-k="finaltxt"></p><a class="btn fill" data-k="storylink" href="#">Read the game story</a></div>
+        <h2 class="major">Box score</h2>
+        <div class="gc-box"></div>
       </aside>
     </div>
     <p class="muted small gc-note">This replay is rebuilt from the Strat-O-Matic box score. Every inning's runs and each player's line match the real game; the exact order of plays in between is our best reconstruction.</p>

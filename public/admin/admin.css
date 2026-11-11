@@ -13,3 +13,5 @@ td input,td select{padding:.3rem .4rem}.ok{color:var(--ok)}.bad,.err{color:var(-
 #postList li{margin:.3rem 0}code{background:#eef0f1;padding:0 .3rem;border-radius:4px}
 @media(max-width:700px){.row{grid-template-columns:1fr}}
 .banner{background:#FDECEA;border:1px solid var(--bad);color:var(--bad);border-radius:8px;padding:.8rem 1rem;margin:0 0 1rem;font-weight:600}
+.nprev{display:flex;gap:1rem;align-items:center;margin:.4rem 0 .8rem}
+.nprev img{max-width:220px;max-height:150px;border-radius:8px;object-fit:cover;border:1px solid #DCDFEA}

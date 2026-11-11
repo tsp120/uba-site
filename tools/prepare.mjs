@@ -12,7 +12,7 @@ const sync = (from, to) => {
   let n = 0; for (const f of fs.readdirSync(src)) { if (/^[\w.-]+$/.test(f) && !/\.(php\d?|phtml|phar|html?|js|svg|htaccess)$/i.test(f)) { fs.copyFileSync(path.join(src, f), path.join(dst, f)); n++; } }
   return n;
 };
-console.log('logos', sync('logos', 'logos'), 'files', sync('files', 'files'), 'schedules', sync('schedules', 'schedules'), 'rosters', sync('rosters', 'rosters'));
+console.log('logos', sync('logos', 'logos'), 'files', sync('files', 'files'), 'schedules', sync('schedules', 'schedules'), 'rosters', sync('rosters', 'rosters'), 'news photos', sync('newsimg', 'media/news'));
 
 fs.mkdirSync(path.join(pub, 'data'), { recursive: true });
 const rosters = {};

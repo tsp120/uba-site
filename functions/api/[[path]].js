@@ -92,15 +92,37 @@ export async function onRequest({ request, env, params }) {
 
     if (path === '/news' && method === 'GET') return json({ posts: (await listDir(env, 'data/news')).filter((f) => f.name.endsWith('.md')).map((f) => f.name).sort().reverse() });
     if (path === '/news' && method === 'POST') {
-      const b = await request.json();
-      if (b.remove) { const name = safeName(b.remove); if (!name.endsWith('.md')) return json({ error: 'Bad name' }, 400); const c = await commit(env, [{ path: `data/news/${name}`, delete: true }], `Commish: remove post ${name}`); return json({ ok: true, commit: c }); }
+      // JSON for removals; multipart form for saving a story, so a photo can come along with it.
+      const multi = (request.headers.get('Content-Type') || '').includes('multipart/form-data');
+      const form = multi ? await request.formData() : null;
+      const b = multi ? Object.fromEntries(['file', 'title', 'date', 'image', 'body'].map((k) => [k, String(form.get(k) ?? '')])) : await request.json();
+      const imgOf = (md) => (md.match(/^image:\s*\/media\/news\/([\w.-]+)\s*$/m) || [])[1];
+      if (b.remove) {
+        const name = safeName(b.remove); if (!name.endsWith('.md')) return json({ error: 'Bad name' }, 400);
+        const old = imgOf((await readText(env, `data/news/${name}`)) || '');
+        const files = [{ path: `data/news/${name}`, delete: true }]; if (old) files.push({ path: `data/newsimg/${old}`, delete: true });
+        const c = await commit(env, files, `Commish: remove post ${name}`); return json({ ok: true, commit: c });
+      }
       const title = clean(b.title, 140); const body = String(b.body || '').slice(0, 50000); const date = /^\d{4}-\d{2}-\d{2}$/.test(b.date) ? b.date : today();
       if (!title || !body.trim()) return json({ error: 'Title and story are required' }, 400);
-      const image = /^https:\/\/[^\s"]+$/.test(b.image || '') ? b.image : '';
       const name = b.file && /^[\w.-]+\.md$/.test(b.file) ? b.file : `${date}-${slug(title)}.md`;
+      const prev = b.file ? (await readText(env, `data/news/${name}`)) || '' : '';
+      const files = [];
+      let image = /^https:\/\/[^\s"]+$/.test(b.image || '') || /^\/media\/news\/[\w.-]+$/.test(b.image || '') ? b.image : '';
+      const photo = form?.get('photo');
+      if (photo && typeof photo === 'object' && photo.size) {
+        const ext = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif' }[photo.type];
+        if (!ext || photo.size > 6 * 1024 * 1024) return json({ error: 'The photo must be a JPG, PNG, WebP or GIF under 6 MB' }, 400);
+        // A new file name each time, so browsers and the CDN never show the old photo.
+        const imgName = `${name.replace(/\.md$/, '')}-${Date.now().toString(36)}.${ext}`;
+        files.push({ path: `data/newsimg/${imgName}`, bytes: new Uint8Array(await photo.arrayBuffer()) });
+        image = `/media/news/${imgName}`;
+      }
+      const old = imgOf(prev); if (old && image !== `/media/news/${old}`) files.push({ path: `data/newsimg/${old}`, delete: true });
       const md = `---\ntitle: "${title.replace(/"/g, "'")}"\ndate: ${date}\n${image ? `image: ${image}\n` : ''}---\n${body.trim()}\n`;
-      const c = await commit(env, [{ path: `data/news/${name}`, text: md }], `Commish: news "${title}"`);
-      return json({ ok: true, file: name, commit: c });
+      files.unshift({ path: `data/news/${name}`, text: md });
+      const c = await commit(env, files, `Commish: news "${title}"`);
+      return json({ ok: true, file: name, image, commit: c });
     }
     if (path.startsWith('/news/') && method === 'GET') { const t = await readText(env, `data/news/${safeName(path.slice(6))}`); return t == null ? json({ error: 'Not found' }, 404) : json({ text: t }); }
 

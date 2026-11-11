@@ -84,12 +84,34 @@ $('#postList').onclick = async (e) => {
   if (del) { if (!confirm(`Remove "${del}"?`)) return; const r = await api('/news', { method: 'POST', json: { remove: del } }); $('#nMsg').innerHTML = `Removed.${live(r.commit)}`; return loadNews(); }
   const { text } = await api('/news/' + encodeURIComponent(ed)); const m = text.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/); const meta = {};
   (m ? m[1] : '').split('\n').forEach((l) => { const i = l.indexOf(':'); if (i > 0) meta[l.slice(0, i).trim()] = l.slice(i + 1).trim().replace(/^"(.*)"$/, '$1'); });
-  $('#nFile').value = ed; $('#nTitle').value = meta.title || ''; $('#nDate').value = meta.date || ''; $('#nImage').value = meta.image || ''; $('#nBody').value = (m ? m[2] : text).trim(); window.scrollTo(0, 0);
+  $('#nFile').value = ed; $('#nTitle').value = meta.title || ''; $('#nDate').value = meta.date || ''; $('#nImage').value = meta.image || ''; $('#nBody').value = (m ? m[2] : text).trim();
+  photo = null; $('#nPhoto').value = ''; preview(meta.image || '', meta.image ? 'Current photo' : ''); window.scrollTo(0, 0);
 };
-$('#nNew').onclick = () => { $('#newsForm').reset(); $('#nFile').value = ''; $('#nDate').valueAsDate = new Date(); };
+// ----- story photo: shrink in the browser (long side 1600px, JPEG) so uploads stay small and fast
+let photo = null;
+function preview(src, info) { $('#nPreview').hidden = !src; $('#nPreview img').src = src || ''; $('#nPhotoInfo').textContent = info || ''; }
+async function shrink(file) {
+  if (file.type === 'image/gif') return file; // keep animation
+  const img = await new Promise((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => bad(new Error('That file could not be read as a picture')); i.src = URL.createObjectURL(file); });
+  const k = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+  if (k === 1 && file.size < 900 * 1024) return file;
+  const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+  return await new Promise((ok) => c.toBlob((b) => ok(b), 'image/jpeg', 0.86));
+}
+$('#nPhoto').onchange = async () => {
+  const f = $('#nPhoto').files[0]; if (!f) return;
+  try { photo = await shrink(f); $('#nImage').value = ''; preview(URL.createObjectURL(photo), `${f.name}, ${Math.round(photo.size / 1024)} KB after resizing`); }
+  catch (err) { photo = null; $('#nPhoto').value = ''; $('#nMsg').innerHTML = `<span class="bad">${esc(err.message)}</span>`; }
+};
+$('#nImage').oninput = () => { if ($('#nImage').value) { photo = null; $('#nPhoto').value = ''; preview(/^https:\/\//.test($('#nImage').value) ? $('#nImage').value : '', 'Linked photo'); } else preview('', ''); };
+$('#nNoPhoto').onclick = () => { photo = null; $('#nPhoto').value = ''; $('#nImage').value = ''; preview('', ''); };
+$('#nNew').onclick = () => { $('#newsForm').reset(); $('#nFile').value = ''; photo = null; preview('', ''); $('#nDate').valueAsDate = new Date(); };
 $('#newsForm').onsubmit = async (e) => {
-  e.preventDefault(); $('#nMsg').textContent = 'Saving…';
-  try { const r = await api('/news', { method: 'POST', json: { file: $('#nFile').value, title: $('#nTitle').value, date: $('#nDate').value, image: $('#nImage').value, body: $('#nBody').value } }); $('#nFile').value = r.file; $('#nMsg').innerHTML = `<span class="ok">Saved.</span>${live(r.commit)}`; loadNews(); }
+  e.preventDefault(); $('#nMsg').textContent = photo ? 'Uploading the photo and saving…' : 'Saving…';
+  const fd = new FormData(); fd.append('file', $('#nFile').value); fd.append('title', $('#nTitle').value); fd.append('date', $('#nDate').value); fd.append('image', $('#nImage').value); fd.append('body', $('#nBody').value);
+  if (photo) fd.append('photo', photo, 'photo.' + ({ 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif' }[photo.type] || 'jpg'));
+  try { const r = await api('/news', { method: 'POST', body: fd }); $('#nFile').value = r.file; $('#nImage').value = r.image || ''; photo = null; $('#nPhoto').value = ''; $('#nMsg').innerHTML = `<span class="ok">Saved.</span>${live(r.commit)}`; loadNews(); }
   catch (err) { $('#nMsg').innerHTML = `<span class="bad">${esc(err.message)}</span>`; }
 };
 
@@ -109,7 +131,7 @@ $('#saveFiles').onclick = async () => {
 // ---------- League ----------
 let league = null;
 async function loadLeague() {
-  league = await api('/league'); $('#wc').value = league.wildcards ?? 2;
+  league = await api('/league'); $('#wc').value = league.wildcards ?? 3;
   $('#teamRows').innerHTML = league.teams.map((t, i) => `<tr><td><b>${esc(t.abbr)}</b></td>${['city', 'nickname', 'owner', 'manager'].map((k) => `<td><input data-i="${i}" data-k="${k}" value="${esc(t[k])}" /></td>`).join('')}
     <td class="small"><label class="btn" style="padding:.15rem .5rem">${t.logo ? 'Replace' : 'Upload'}<input type="file" accept="image/*" data-logo="${esc(t.abbr)}" hidden></label></td></tr>`).join('');
 }

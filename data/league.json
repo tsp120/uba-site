@@ -2,7 +2,7 @@
   "name": "Unbelievable Baseball Association",
   "short": "UBA",
   "established": 1968,
-  "wildcards": 2,
+  "wildcards": 3,
   "teams": [
     {
       "abbr": "BUF",

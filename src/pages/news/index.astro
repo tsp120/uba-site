@@ -7,5 +7,5 @@ const P = posts();
 <Base title="League News" active="news">
   <h1>League News</h1>
   <p class="muted">Announcements and stories from the commissioner. Daily game stories live in the <a href="/newspaper/">Daily News</a>.</p>
-  {P.length === 0 ? <p>No posts yet.</p> : <div class="posts">{P.map((p) => <article class="post"><div class="meta">{p.date && fmtDate(p.date)}</div><h3><a href={`/news/${p.slug}/`}>{p.title}</a></h3><p>{p.excerpt}…</p></article>)}</div>}
+  {P.length === 0 ? <p>No posts yet.</p> : <div class="posts">{P.map((p) => <article class="post">{p.image && <a class="thumb" href={`/news/${p.slug}/`} tabindex="-1" aria-hidden="true"><img src={p.image} alt="" loading="lazy" /></a>}<div class="meta">{p.date && fmtDate(p.date)}</div><h3><a href={`/news/${p.slug}/`}>{p.title}</a></h3><p>{p.excerpt}…</p></article>)}</div>}
 </Base>

@@ -35,7 +35,10 @@
       <form id="newsForm">
         <input type="hidden" id="nFile" />
         <label>Title <input id="nTitle" required maxlength="140" /></label>
-        <div class="row"><label>Date <input type="date" id="nDate" /></label><label>Image link (optional, https://…) <input id="nImage" /></label></div>
+        <div class="row"><label>Date <input type="date" id="nDate" /></label></div>
+        <div class="row"><label>Photo (optional) <input type="file" id="nPhoto" accept="image/jpeg,image/png,image/webp,image/gif" /></label><label>or a link to one (https://…) <input id="nImage" /></label></div>
+        <div id="nPreview" class="nprev" hidden><img alt="Photo preview" /><div><span class="muted small" id="nPhotoInfo"></span><br /><button type="button" class="btn" id="nNoPhoto">Remove photo</button></div></div>
+        <p class="muted small">The newest stories rotate across the top of the home page, photo and all. Big photos are shrunk to web size before they upload.</p>
         <label>Story <textarea id="nBody" rows="14" required placeholder="Blank line = new paragraph. **bold**, *italic*, [link](https://…), - bullet"></textarea></label>
         <button class="btn fill">Publish story</button> <button type="button" class="btn" id="nNew">New</button> <span id="nMsg"></span>
       </form>
