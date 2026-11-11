@@ -9,8 +9,14 @@ document.addEventListener('click', (e) => {
   table.querySelectorAll('th').forEach((h) => h.removeAttribute('aria-sort')); th.setAttribute('aria-sort', dir === -1 ? 'descending' : 'ascending');
   rows.sort((a, b) => { const x = val(a), y = val(b); return (x > y ? 1 : x < y ? -1 : 0) * dir; }).forEach((r) => body.appendChild(r));
 });
-document.getElementById('menu-btn')?.addEventListener('click', () => document.body.classList.toggle('menu'));
-document.addEventListener('click', (e) => { if (document.body.classList.contains('menu') && !e.target.closest('#side,#menu-btn')) document.body.classList.remove('menu'); });
+// Phone menu: the hamburger opens the site nav under the masthead.
+(() => {
+  const btn = document.getElementById('navbtn'); const nav = document.getElementById('mainnav'); if (!btn || !nav) return;
+  const set = (open) => { btn.setAttribute('aria-expanded', String(open)); document.body.classList.toggle('navopen', open); btn.querySelector('.lbl').textContent = open ? 'Close' : 'Menu'; btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); };
+  btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.body.classList.contains('navopen')) { set(false); btn.focus(); } });
+  document.addEventListener('click', (e) => { if (document.body.classList.contains('navopen') && !e.target.closest('.mast')) set(false); });
+})();
 // Live filter for any input[data-filter="#tableId"]
 document.querySelectorAll('input[data-filter]').forEach((inp) => inp.addEventListener('input', () => {
   const q = inp.value.trim().toLowerCase(); document.querySelectorAll(inp.dataset.filter + ' tbody tr').forEach((r) => { r.style.display = !q || r.textContent.toLowerCase().includes(q) ? '' : 'none'; });

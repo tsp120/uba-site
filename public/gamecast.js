@@ -78,7 +78,7 @@
     // line score
     const n = G.innings;
     $('.gc-line thead').innerHTML = `<tr><th></th>${Array.from({ length: n }, (_, k) => `<th class="num">${k + 1}</th>`).join('')}<th class="num">R</th><th class="num">H</th><th class="num">E</th></tr>`;
-    $('.gc-line tbody').innerHTML = SIDES.map((s) => `<tr><td class="nowrap">${T[s].logo ? `<img class="logo-sm" src="${esc(T[s].logo)}" alt="">` : ''}${esc(T[s].city)}</td>${t.runs[s].map((r, k) => `<td class="num">${r == null ? (done && s === 'home' && G.final.home.inn[k] == null ? 'x' : '') : r}</td>`).join('')}<td class="num tot">${i < 0 ? 0 : sum(t.runs[s])}</td><td class="num tot">${t.hits[s]}</td><td class="num tot">${done ? G.final[s].e : '-'}</td></tr>`).join('');
+    $('.gc-line tbody').innerHTML = SIDES.map((s) => `<tr><td class="nowrap">${T[s].logo ? `<img class="logo-sm" src="${esc(T[s].logo)}" alt="">` : ''}<span class="full">${esc(T[s].city)}</span><span class="ab">${esc(T[s].abbr)}</span></td>${t.runs[s].map((r, k) => `<td class="num">${r == null ? (done && s === 'home' && G.final.home.inn[k] == null ? 'x' : '') : r}</td>`).join('')}<td class="num tot">${i < 0 ? 0 : sum(t.runs[s])}</td><td class="num tot">${t.hits[s]}</td><td class="num tot">${done ? G.final[s].e : '-'}</td></tr>`).join('');
     // feed (newest first, grouped by half-inning)
     const ol = $('.gc-feed ol');
     for (; shown <= i; shown++) {

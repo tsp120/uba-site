@@ -58,11 +58,11 @@ const decision = featured?.decision.replace(/Win:/, 'W: ').replace(/Loss:/, ', L
       <div class="bar"></div>
       <div class="body">
         <table>
-          <thead><tr><th></th>{Array.from({ length: innings }, (_, i) => <th>{i + 1}</th>)}<th>R</th><th>H</th><th>E</th></tr></thead>
+          <thead><tr><th></th>{Array.from({ length: innings }, (_, i) => <th class="inn">{i + 1}</th>)}<th>R</th><th>H</th><th>E</th></tr></thead>
           <tbody>{[[featured.away, lines[0]], [featured.home, lines[1]]].map(([ab, l]) => (
             <tr class={l.r === Math.max(lines[0].r, lines[1].r) ? 'won' : ''}>
               <td class="tm">{team(ab)?.logo && <img class="logo-sm" src={team(ab).logo} alt="" />}{team(ab)?.city || ab}</td>
-              {Array.from({ length: innings }, (_, i) => <td>{l.inn[i] ?? ''}</td>)}<td class="tot">{l.r}</td><td class="tot">{l.h}</td><td class="tot">{l.e}</td>
+              {Array.from({ length: innings }, (_, i) => <td class="inn">{l.inn[i] ?? ''}</td>)}<td class="tot">{l.r}</td><td class="tot">{l.h}</td><td class="tot">{l.e}</td>
             </tr>))}</tbody>
         </table>
         {decision && <p class="dec">{decision}</p>}

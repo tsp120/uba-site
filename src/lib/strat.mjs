@@ -323,6 +323,6 @@ export const posts = memo(() => {
     const src = read(`news/${f}`);
     const m = src.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
     const meta = {}; if (m) for (const l of m[1].split('\n')) { const i = l.indexOf(':'); if (i > 0) meta[l.slice(0, i).trim()] = l.slice(i + 1).trim().replace(/^"(.*)"$/, '$1'); }
-    return { slug: f.replace(/\.md$/, ''), title: meta.title || f, date: meta.date || '', image: /^https:\/\/[^\s"]+$|^\/media\/news\/[\w.-]+$/.test(meta.image || '') ? meta.image : null, body: (m ? m[2] : src).trim(), excerpt: (m ? m[2] : src).replace(/[#*_>\x60\[\]]|\(https?:[^)]*\)/g, '').replace(/\s+/g, ' ').trim().slice(0, 240).replace(/\s+\S*$/, '') };
+    return { slug: f.replace(/\.md$/, ''), title: meta.title || f, date: meta.date || '', image: /^https:\/\/[^\s"]+$|^\/media\/news\/[\w.-]+$/.test(meta.image || '') ? meta.image : null, body: (m ? m[2] : src).trim(), excerpt: (m ? m[2] : src).replace(/^\s*[-*+]\s+/gm, '').replace(/[#*_>\x60\[\]]|\(https?:[^)]*\)/g, '').replace(/\s+/g, ' ').trim().slice(0, 240).replace(/\s+\S*$/, '') };
   }).sort((a, b) => b.date.localeCompare(a.date) || b.slug.localeCompare(a.slug));
 });

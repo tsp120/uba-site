@@ -27,7 +27,8 @@ const leaders = standings().flatMap((c) => c.divisions.map((d) => ({ div: `${c.n
   <header class="mast">
     <div class="mast-in">
       <a href="/" class="brand"><Logo size={54} /><div><b>Unbelievable Baseball Association</b><span>Strat-O-Matic since {L.established}</span></div></a>
-      <nav aria-label="Main">{nav.map(([href, label, key]) => <a href={href} aria-current={active === key ? 'page' : undefined}>{label}</a>)}</nav>
+      <button type="button" class="navbtn" id="navbtn" aria-label="Open menu" aria-expanded="false" aria-controls="mainnav"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="lbl">Menu</span></button>
+      <nav aria-label="Main" id="mainnav">{nav.map(([href, label, key]) => <a href={href} aria-current={active === key ? 'page' : undefined}>{label}</a>)}</nav>
     </div>
   </header>
   <div class="stripe" role="presentation"></div>
