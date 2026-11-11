@@ -1,5 +1,5 @@
 ---
-title: "Walker Powers Jacks Past Sluggers; Vaughn Leads Browns Rout of Otters; Wells Keeps 'Hens Hopes Aliv"
+title: "Walker Powers Jacks Past Sluggers"
 date: 2026-11-11
 image: https://cdn.mlbtraderumors.com/files/2021/05/christianwalker-dbacks2021-1024x678.jpg
 ---
