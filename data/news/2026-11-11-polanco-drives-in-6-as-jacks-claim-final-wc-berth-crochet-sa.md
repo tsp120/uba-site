@@ -1,5 +1,5 @@
 ---
-title: "Otters Clinch Tie for Central Crown"
+title: "Polanco Drives in 6 as Jacks Claim Final WC Berth"
 date: 2026-11-11
 image: https://img.mlbstatic.com/mlb-images/image/upload/ar_16:9,g_auto,q_auto:good,w_1024,c_fill,f_jpg/mlb/yymbhtfufccnjmfwrpna
 ---
