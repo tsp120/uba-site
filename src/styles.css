@@ -273,3 +273,4 @@ tr.nomlb td{background:#FAFAFD}
   .gc-controls{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}.gc-controls .btn{text-align:center}.gc-speed{grid-column:1/-1;order:5}
 }
 @media (max-width:900px){.gc-mid{flex-wrap:wrap;row-gap:.5rem}.gc-inning{flex-basis:100%;text-align:center;white-space:normal}}
+@media (max-width:900px){.gc-mid{flex-direction:column;gap:.35rem}.gc-outs{order:3}}
