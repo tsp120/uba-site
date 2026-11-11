@@ -1,5 +1,5 @@
 ---
-title: "Stars Down Alleghenys to Clinch North Crown; Vlad Drives in 5 to Keep Feds Alive; Crow-Armstrong End"
+title: "Stars Down Alleghenys to Clinch North Crown"
 date: 2026-11-11
 image: https://images2.minutemediacdn.com/image/upload/c_crop,x_0,y_319,w_3936,h_2214/c_fill,w_720,ar_16:9,f_auto,q_auto,g_auto/images/ImagnImages/mmsport/135/01jt1c7h01zew9vsw5m1.jpg
 ---
