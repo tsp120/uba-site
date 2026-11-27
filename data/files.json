@@ -1,5 +1,185 @@
 [
   {
+    "title": "Washington cap 2027",
+    "file": "Washington_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Vancouver Roster Cap 2027",
+    "file": "Vancouver_Roster_Cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Toledo cap 2027",
+    "file": "Toledo_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "St Louis cap 2027",
+    "file": "St_Louis_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Seattle cap 2027",
+    "file": "Seattle_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "San Francisco cap 2027",
+    "file": "San_Francisco_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "San Diego cap 2027",
+    "file": "San_Diego_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "San Antonio cap 2027",
+    "file": "San_Antonio_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Salt Lake City cap 2027",
+    "file": "Salt_Lake_City_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Richmond cap 2027",
+    "file": "Richmond_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Pittsburgh cap 2027",
+    "file": "Pittsburgh_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Oakland cap 2027",
+    "file": "Oakland_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "New York cap 2027",
+    "file": "New_York_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "New Orleans cap 2027",
+    "file": "New_Orleans_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Nashville cap 2027",
+    "file": "Nashville_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Milwaukee cap 2027",
+    "file": "Milwaukee_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Miami cap 2027",
+    "file": "Miami_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Mexico City cap 2027",
+    "file": "Mexico_City_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Memphis cap 2027",
+    "file": "Memphis_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Louisville cap 2027",
+    "file": "Louisville_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Los Angeles cap 2027",
+    "file": "Los_Angeles_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Kansas City cap 2027",
+    "file": "Kansas_City_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Jacksonville cap 2027",
+    "file": "Jacksonville_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Indianapolis cap 2027",
+    "file": "Indianapolis_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Hawaii cap 2027",
+    "file": "Hawaii_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Dallas cap 2027",
+    "file": "Dallas_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Chicago cap 2027",
+    "file": "Chicago_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Buffalo cap 2027",
+    "file": "Buffalo_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Baltimore cap 2027",
+    "file": "Baltimore_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
+    "title": "Atlanta cap 2027",
+    "file": "Atlanta_cap_2027.xlsx",
+    "updated": "2026-11-26",
+    "section": "current"
+  },
+  {
     "title": "2027 Team to Team",
     "file": "2027_Team_to_Team.xlsx",
     "updated": "2026-11-26",
